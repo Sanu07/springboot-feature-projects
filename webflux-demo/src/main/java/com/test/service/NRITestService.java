@@ -9,9 +9,12 @@ import org.springframework.data.r2dbc.core.R2dbcEntityTemplate;
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.test.config.DBConnector;
+import com.test.entity.Milestone;
 import com.test.entity.NRI;
+import com.test.entity.Tracker;
 import com.test.repository.NRITestRepo;
 
 import lombok.extern.slf4j.Slf4j;
@@ -43,8 +46,8 @@ public class NRITestService {
 				try {
 					nri = NRI.builder()
 							.id(row.get("id", Long.class))
-							.trackers(mapper.readValue(row.get("trackers", String.class), List.class))
-							.milestones(mapper.readValue(row.get("milestones", String.class), Map.class))
+							.trackers(mapper.readValue(row.get("trackers", String.class), new TypeReference<List<Tracker>>() {}))
+							.milestones(mapper.readValue(row.get("milestones", String.class), new TypeReference<Map<String, Milestone>>() {}))
 							.build();
 				} catch (JsonProcessingException e) {
 					e.printStackTrace();
