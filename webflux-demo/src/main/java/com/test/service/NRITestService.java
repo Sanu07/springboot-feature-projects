@@ -8,6 +8,7 @@ import org.springframework.data.r2dbc.core.DatabaseClient;
 import org.springframework.data.r2dbc.core.R2dbcEntityTemplate;
 import org.springframework.stereotype.Service;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -61,6 +62,11 @@ public class NRITestService {
 		// client.execute("").fetch().;
 		// client.execute("");
 		// return repo.saveData(data.getId(), mapper.writeValueAsString(data.getData()));
+		mapper.setVisibility(mapper.getSerializationConfig().getDefaultVisibilityChecker()
+                .withFieldVisibility(JsonAutoDetect.Visibility.ANY)
+                .withGetterVisibility(JsonAutoDetect.Visibility.NONE)
+                .withSetterVisibility(JsonAutoDetect.Visibility.NONE)
+                .withCreatorVisibility(JsonAutoDetect.Visibility.NONE));
 		DatabaseClient client = connector.createConnection();
 		client.execute("INSERT INTO NRI (ID, TRACKERS, MILESTONES) VALUES($1, $2::JSON, $3::JSON)")
 			.bind("$1", data.getId())
@@ -68,5 +74,12 @@ public class NRITestService {
 			.bind("$3", mapper.writeValueAsString(data.getMilestones()))
 			.fetch().first().subscribe();
 		return Mono.just(data);
+	}
+
+	public void update(String date) {
+		DatabaseClient client = connector.createConnection();
+		client.execute("UPDATE NRI SET MILESTONES = JSONB_SET(MILESTONES::JSONB, '{milestone1, date1}', concat('\"',$1,'\"')::jsonb) WHERE ID = 2")
+			.bind("$1", date)
+			.fetch().first().subscribe();
 	}
 }

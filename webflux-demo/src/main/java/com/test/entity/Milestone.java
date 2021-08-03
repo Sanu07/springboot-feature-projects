@@ -8,6 +8,8 @@ import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.JsonFormat.Shape;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import com.test.config.CustomDateDeserializer;
 
 import lombok.AccessLevel;
@@ -44,6 +46,8 @@ public class Milestone {
 		return date2;
 	}
 
+	@JsonSerialize(using = LocalDateSerializer.class)
+	@JsonFormat(shape = Shape.STRING, pattern = "MM/dd/yyyy")
 	public void setDate2(LocalDate date2) {
 		this.date2 = date2;
 	}

@@ -27,5 +27,5 @@ public class Tracker {
 	public void setTrackerDescription(String trackerDescription) {
 		this.trackerDescription = trackerDescription;
 	}
-	
+
 }
