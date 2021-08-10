@@ -19,14 +19,46 @@ public class BatchController {
     private JobLauncher jobLauncher;
     
 	@Autowired
-    private Job job;
+    private Job customerJob;
+	
+	@Autowired
+    private Job orderJob;
+	
+	@Autowired
+    private Job feedbackJob;
     
-	@GetMapping(path = "/start")
-    public void startBatch() {
+	@GetMapping(path = "/populate-customers")
+    public void startBatchForPopulatingCustomers() {
         JobParameters jobParameters = new JobParametersBuilder()
                 .addLong("startAt", System.currentTimeMillis()).toJobParameters();
         try {
-            jobLauncher.run(job, jobParameters);
+            jobLauncher.run(customerJob, jobParameters);
+        } catch (JobExecutionAlreadyRunningException | JobRestartException
+                | JobInstanceAlreadyCompleteException | JobParametersInvalidException e) {
+
+            e.printStackTrace();
+        }
+    }
+	
+	@GetMapping(path = "/populate-orders")
+    public void startBatchForPopulatingOrders() {
+        JobParameters jobParameters = new JobParametersBuilder()
+                .addLong("startAt", System.currentTimeMillis()).toJobParameters();
+        try {
+            jobLauncher.run(orderJob, jobParameters);
+        } catch (JobExecutionAlreadyRunningException | JobRestartException
+                | JobInstanceAlreadyCompleteException | JobParametersInvalidException e) {
+
+            e.printStackTrace();
+        }
+    }
+	
+	@GetMapping(path = "/populate-feedbacks")
+    public void startBatchForPopulatingFeedbacks() {
+        JobParameters jobParameters = new JobParametersBuilder()
+                .addLong("startAt", System.currentTimeMillis()).toJobParameters();
+        try {
+            jobLauncher.run(feedbackJob, jobParameters);
         } catch (JobExecutionAlreadyRunningException | JobRestartException
                 | JobInstanceAlreadyCompleteException | JobParametersInvalidException e) {
 

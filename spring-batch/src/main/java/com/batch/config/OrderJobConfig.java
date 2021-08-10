@@ -19,13 +19,13 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.Resource;
 
-import com.batch.model.Customer;
-import com.batch.processors.CustomerProcessor;
-import com.batch.repository.CustomerRepository;
+import com.batch.model.Order;
+import com.batch.processors.OrderProcessor;
+import com.batch.repository.OrderRepository;
 
 @Configuration
 @EnableBatchProcessing
-public class JobConfig {
+public class OrderJobConfig {
 	
 	@Autowired
 	private JobBuilderFactory jobBuilderFactory;
@@ -34,62 +34,62 @@ public class JobConfig {
 	private StepBuilderFactory stepBuilderFactory;
 	
 	@Autowired
-	private CustomerRepository customerRepository;
+	private OrderRepository orderRepository;
 	
-	@Value("classPath:/data/customer-data.csv")
+	@Value("classPath:/data/order-data.csv")
 	private Resource resource;
 	
 	@Bean
-    public Job readCSVFileJob() {
+    public Job orderJob() {
         return jobBuilderFactory
                 .get("readCSVFileJob")
                 .incrementer(new RunIdIncrementer())
-                .start(step())
+                .start(orderStep())
                 .build();
     }
 	
 	@Bean
-    public Step step() {
+    public Step orderStep() {
         return stepBuilderFactory
                 .get("step")
-                .<Customer, Customer>chunk(10)
-                .reader(reader())
-                .processor(processor())
-                .writer(writer())
+                .<Order, Order>chunk(10)
+                .reader(orderReader())
+                .processor(orderProcessor())
+                .writer(orderWriter())
                 .build();
     }
 	
 	@Bean
-    public ItemProcessor<Customer, Customer> processor() {
-        return new CustomerProcessor();
+    public ItemProcessor<Order, Order> orderProcessor() {
+        return new OrderProcessor();
     }
 	
 	@Bean
-    public FlatFileItemReader<Customer> reader() {
-        FlatFileItemReader<Customer> itemReader = new FlatFileItemReader<>();
-        itemReader.setLineMapper(lineMapper());
+    public FlatFileItemReader<Order> orderReader() {
+        FlatFileItemReader<Order> itemReader = new FlatFileItemReader<>();
+        itemReader.setLineMapper(orderLineMapper());
         itemReader.setLinesToSkip(1);
         itemReader.setResource(resource);
         return itemReader;
     }
 	
 	@Bean
-    public LineMapper<Customer> lineMapper() {
-        DefaultLineMapper<Customer> lineMapper = new DefaultLineMapper<Customer>();
+    public LineMapper<Order> orderLineMapper() {
+        DefaultLineMapper<Order> lineMapper = new DefaultLineMapper<Order>();
         DelimitedLineTokenizer lineTokenizer = new DelimitedLineTokenizer();
-        lineTokenizer.setNames(new String[] { "id", "firstName", "lastName" });
-        lineTokenizer.setIncludedFields(new int[] { 0, 1, 2 });
-        BeanWrapperFieldSetMapper<Customer> fieldSetMapper = new BeanWrapperFieldSetMapper<>();
-        fieldSetMapper.setTargetType(Customer.class);
+        lineTokenizer.setNames(new String[] { "totalAmount" });
+        lineTokenizer.setIncludedFields(new int[] { 0 });
+        BeanWrapperFieldSetMapper<Order> fieldSetMapper = new BeanWrapperFieldSetMapper<>();
+        fieldSetMapper.setTargetType(Order.class);
         lineMapper.setLineTokenizer(lineTokenizer);
         lineMapper.setFieldSetMapper(fieldSetMapper);
         return lineMapper;
     }
 	
 	@Bean
-    public RepositoryItemWriter<Customer> writer() {
-		RepositoryItemWriter<Customer> writer = new RepositoryItemWriter<>();
-        writer.setRepository(customerRepository);
+    public RepositoryItemWriter<Order> orderWriter() {
+		RepositoryItemWriter<Order> writer = new RepositoryItemWriter<>();
+        writer.setRepository(orderRepository);
         writer.setMethodName("save");
         return writer;
     }

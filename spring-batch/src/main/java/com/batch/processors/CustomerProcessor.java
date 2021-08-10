@@ -1,27 +1,37 @@
 package com.batch.processors;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
+import javax.persistence.EntityManager;
+
 import org.springframework.batch.item.ItemProcessor;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.batch.model.Customer;
 
 public class CustomerProcessor implements ItemProcessor<Customer, Customer> {
 
+	@Autowired
+	private EntityManager em;
+
+	private List<String> userIds = new ArrayList<>();
+
 	@Override
 	public Customer process(Customer customer) throws Exception {
-		String customerIdInitials = customer.getFirstName().substring(0, 1) + customer.getLastName().substring(0, 1);
-		String customerIdFakePhoneNo = getFakePhoneNo();
-		customer.setCustomerId(customerIdInitials.toUpperCase().concat(customerIdFakePhoneNo));
+		String initials[] = customer.getCustomerName().split(" ");
+		customer.setCustomerId(initials[0].substring(0, 1).toUpperCase().concat(initials[1].substring(0, 1).toUpperCase())
+				.concat(customer.getPhone()));
+		customer.setCreatedByUserId(getUserId());
 		return customer;
 	}
 
-	public String getFakePhoneNo() {
-		StringBuilder sb = new StringBuilder();
-		for (int i = 0; i < 10; i++) {
-			sb.append(new Random().nextInt(10));
+	public String getUserId() {
+		if (userIds.size() == 0) {
+			userIds = em.createNativeQuery("SELECT LOGIN_ID FROM USER_DETAILS").getResultList();
 		}
-		return sb.toString();
+		int count = userIds.size();
+		return userIds.get(new Random().nextInt(10) % count);
 	}
-	
 }

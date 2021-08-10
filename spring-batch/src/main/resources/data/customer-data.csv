@@ -1,51 +1,51 @@
-id,firstName,lastName
-1,Stone,Barrett
-2,Raymond,Pace
-3,Armando,Logan
-4,Latifah,Barnett
-5,Cassandra,Moses
-6,Audra,Hopkins
-7,Upton,Morrow
-8,Melodie,Velasquez
-9,Sybill,Nolan
-10,Glenna,Little
-11,Ingrid,Jackson
-12,Duncan,Castaneda
-13,Xaviera,Gillespie
-14,Rhoda,Lancaster
-15,Fatima,Combs
-16,Merrill,Hopkins
-17,Felicia,Vinson
-18,Hanae,Harvey
-19,Ramona,Acosta
-20,Katelyn,Hammond
-21,Rosalyn,Simon
-22,Alea,Barron
-23,Raymond,Knox
-24,Hu,Franks
-25,Damon,Holman
-26,Ori,Nunez
-27,Sasha,Carey
-28,Sarah,Mullins
-29,Hammett,Buck
-30,Melissa,Parrish
-31,Daquan,Craig
-32,Keane,Rose
-33,Erich,Joyce
-34,Iliana,Atkinson
-35,Dawn,Fulton
-36,Anjolie,Gay
-37,Tanya,Crosby
-38,Dacey,Hinton
-39,Carl,Monroe
-40,Derek,Bush
-41,Lucian,Shannon
-42,Jorden,Gilliam
-43,Arden,Buckner
-44,Kenneth,Marquez
-45,Kitra,Becker
-46,Jin,Greer
-47,Jaden,Suarez
-48,Sylvia,Nielsen
-49,Mona,Osborn
-50,Lyle,Lawson
+customerName,phone,address,email
+Stone Barrett,1236547890,6649 N Blue Gum St,stone@gmail.com
+Raymond Pace,1236547891,4 B Blue Ridge Blvd,raymond@gmail.com
+Armando Logan,1236547892,8 W Cerritos Ave #54,armando@gmail.com
+Latifah Barnett,1236547893,639 Main St,latifah@gmail.com
+Cassandra Moses,1236547894,34 Center St,cassandra@gmail.com
+Audra Hopkins,1236547895,3 Mcauley Dr,audra@gmail.com
+Upton Morrow,1236547896,7 Eads St,upton@gmail.com
+Melodie Velasquez,1236547897,7 W Jackson Blvd,melodie@gmail.com
+Sybill Nolan,1236547898,5 Boston Ave #88,sybill@gmail.com
+Glenna Little,1236547899,228 Runamuck Pl #2808,glenna@gmail.com
+Ingrid Jackson,1236547900,2371 Jerrold Ave,ingrid@gmail.com
+Duncan Castaneda,1236547901,37275 St  Rt 17m M,duncan@gmail.com
+Xaviera Gillespie,1236547902,25 E 75th St #69,xaviera@yahoo.com
+Rhoda Lancaster,1236547903,98 Connecticut Ave Nw,rhoda@yahoo.com
+Fatima Combs,1236547904,56 E Morehead St,fatima@yahoo.com
+Merrill Hopkins,1236547905,73 State Road 434 E,merrill@yahoo.com
+Felicia Vinson,1236547906,69734 E Carrillo St,felicia@yahoo.com
+Hanae Harvey,1236547907,322 New Horizon Blvd,hanae@yahoo.com
+Ramona Acosta,1236547908,1 State Route 27,ramona@yahoo.com
+Katelyn Hammond,1236547909,394 Manchester Blvd,katelyn@yahoo.com
+Rosalyn Simon,1236547910,6 S 33rd St,rosalyn@yahoo.com
+Alea Barron,1236547911,6 Greenleaf Ave,alea@yahoo.com
+Raymond Knox,1236547912,618 W Yakima Ave,raymond@yahoo.com
+Hu Franks,1236547913,74 S Westgate St,hu@yahoo.com
+Damon Holman,1236547914,3273 State St,damon@yahoo.com
+Ori Nunez,1236547915,1 Central Ave,ori@yahoo.com
+Sasha Carey,1236547916,86 Nw 66th St #8673,sasha@yahoo.com
+Sarah Mullins,1236547917,2 Cedar Ave #84,sarah@yahoo.com
+Hammett Buck,1236547918,90991 Thorburn Ave,hammett@yahoo.com
+Melissa Parrish,1236547919,386 9th Ave N,melissa@yahoo.com
+Daquan Craig,1236547920,74874 Atlantic Ave,daquan@yahoo.com
+Keane Rose,1236547921,366 South Dr,keane@yahoo.com
+Erich Joyce,1236547922,45 E Liberty St,erich@yahoo.com
+Iliana Atkinson,1236547923,4 Ralph Ct,iliana@yahoo.com
+Dawn Fulton,1236547924,2742 Distribution Way,dawn@rediff.com
+Anjolie Gay,1236547925,426 Wolf St,anjolie@rediff.com
+Tanya Crosby,1236547926,128 Bransten Rd,tanya@rediff.com
+Dacey Hinton,1236547927,17 Morena Blvd,dacey@rediff.com
+Carl Monroe,1236547928,775 W 17th St,carl@rediff.com
+Derek Bush,1236547929,6980 Dorsett Rd,derek@rediff.com
+Lucian Shannon,1236547930,2881 Lewis Rd,lucian@rediff.com
+Jorden Gilliam,1236547931,7219 Woodfield Rd,jorden@rediff.com
+Arden Buckner,1236547932,1048 Main St,arden@rediff.com
+Kenneth Marquez,1236547933,678 3rd Ave,kenneth@rediff.com
+Kitra Becker,1236547934,20 S Babcock St,kitra@rediff.com
+Jin Greer,1236547935,2 Lighthouse Ave,jin@rediff.com
+Jaden Suarez,1236547936,38938 Park Blvd,jaden@rediff.com
+Sylvia Nielsen,1236547937,5 Tomahawk Dr,sylvia@rediff.com
+Mona Osborn,1236547938,762 S Main St,mona@rediff.com
+Lyle Lawson,1236547939,209 Decker Dr,lyle@rediff.com
