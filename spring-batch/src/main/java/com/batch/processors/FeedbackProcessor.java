@@ -29,6 +29,8 @@ public class FeedbackProcessor implements ItemProcessor<Feedback, Feedback> {
 	
 	Map<UUID, Customer> customerMap = new HashMap<>();
 	
+	private int counter;
+	
 	private final String[] descriptions = {
 			"It was not upto my expectations",
 			"It was ok. I was expecting something better",
@@ -62,6 +64,6 @@ public class FeedbackProcessor implements ItemProcessor<Feedback, Feedback> {
 			orders = em.createNativeQuery("SELECT * FROM ORDER_DETAILS", Order.class).getResultList();
 		}
 		int count = orders.size();
-		return orders.get(new Random().nextInt(100) % count);
+		return orders.get(counter++);
 	}
 }

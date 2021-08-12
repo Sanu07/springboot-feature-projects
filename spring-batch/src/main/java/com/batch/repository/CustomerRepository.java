@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import com.batch.model.Customer;
 
-@Repository
+@Repository("postgrescustomerRepository")
 public interface CustomerRepository extends JpaRepository<Customer, UUID>{
 
 }
