@@ -82,4 +82,8 @@ public class NRITestService {
 			.bind("$1", date)
 			.fetch().first().subscribe();
 	}
+	
+	public Flux<Long> getResetData() {
+		return Flux.just(1L, 2L, 3L);
+	}
 }

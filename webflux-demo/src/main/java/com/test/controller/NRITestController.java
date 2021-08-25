@@ -1,6 +1,10 @@
 package com.test.controller;
 
+import java.util.Collections;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -11,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.test.entity.NRI;
+import com.test.entity.NRIVendorResponse;
 import com.test.service.NRITestService;
 
 import lombok.extern.slf4j.Slf4j;
@@ -38,9 +43,19 @@ public class NRITestController {
 	public Mono<NRI> saveData(@RequestBody NRI data) throws JsonProcessingException {
 		return service.save(data);
 	}
-	
+
 	@PutMapping("date/{date}")
 	public void updateMilestoneData(@PathVariable String date) {
 		service.update(date);
+	}
+
+	@GetMapping("resetIds")
+	public Mono<ResponseEntity<NRIVendorResponse>> getNRIResetsData() {
+		return service.getResetData().collectList().map(resetIds -> {
+			return new ResponseEntity<>(new NRIVendorResponse("SUCCESS", Collections.singletonMap("resetIds", resetIds), null), HttpStatus.OK);
+		}).onErrorResume(error -> {
+			return Mono.just(new ResponseEntity<>(
+					new NRIVendorResponse("FAILURE", "", error.getMessage()), HttpStatus.BAD_REQUEST));
+		});
 	}
 }
