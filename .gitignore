@@ -10,3 +10,8 @@ spring-security-oauth/mvnw
 spring-security-oauth/.mvn/wrapper/MavenWrapperDownloader.java
 spring-security-oauth/.mvn/wrapper/maven-wrapper.properties
 spring-security-oauth/.mvn/wrapper/maven-wrapper.jar
+ouath-client-app/.mvn/wrapper/maven-wrapper.jar
+ouath-client-app/.mvn/wrapper/maven-wrapper.properties
+ouath-client-app/.mvn/wrapper/MavenWrapperDownloader.java
+ouath-client-app/mvnw
+ouath-client-app/mvnw.cmd
