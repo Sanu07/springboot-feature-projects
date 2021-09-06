@@ -3,6 +3,8 @@ package com.test.controller;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.test.entity.NRI;
 import com.test.entity.NRIVendorResponse;
+import com.test.entity.Status;
 import com.test.service.NRITestService;
 
 import lombok.extern.slf4j.Slf4j;
@@ -66,5 +69,10 @@ public class NRITestController {
 		return Flux.just("WEQEW", "QWEQW").collectList().map(str -> {
 			return str;
 		});
+	}
+	
+	@GetMapping("getStatus")
+	public Flux<Status> getStatusData() {
+		return service.getStatus();
 	}
 }
