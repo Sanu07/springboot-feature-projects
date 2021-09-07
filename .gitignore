@@ -15,3 +15,8 @@ ouath-client-app/.mvn/wrapper/maven-wrapper.properties
 ouath-client-app/.mvn/wrapper/MavenWrapperDownloader.java
 ouath-client-app/mvnw
 ouath-client-app/mvnw.cmd
+redis-cache-test/.mvn/wrapper/maven-wrapper.jar
+redis-cache-test/.mvn/wrapper/maven-wrapper.properties
+redis-cache-test/.mvn/wrapper/MavenWrapperDownloader.java
+redis-cache-test/mvnw
+redis-cache-test/mvnw.cmd
