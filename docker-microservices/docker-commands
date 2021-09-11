@@ -1,0 +1,8 @@
+DOCKER springboot + mysql
+==================================================================================
+docker run --detach --env="MYSQL_ROOT_PASSWORD=root" --env="MYSQL_PASSWORD=root" --env="MYSQL_DATABASE=test" --name=mysql-docker --publish 3307:3306 --network=app-mysql-network --volume mysql-database-volume:/var/lib/mysql mysql
+----------------------------------------------------------------------------------
+docker build -t currency-calculator .
+----------------------------------------------------------------------------------
+docker run -p 8000:8000 --name springboot-docker-mysql-app --network=app-mysql-network -d currency-calculator
+==================================================================================

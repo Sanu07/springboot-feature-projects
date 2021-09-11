@@ -1,0 +1,82 @@
+version: '3.7'
+services:
+
+  mysql-docker:
+    image: "mysql"
+    restart: always
+    container_name: mysql-docker
+    ports:
+      - 3307:3306
+    environment:
+      MYSQL_DATABASE: test
+      MYSQL_PASSWORD: root
+      MYSQL_ROOT_PASSWORD: root
+    networks:
+      - app-mysql-network
+    volumes:
+      - mysql-database-data-volume:/var/lib/mysql
+      
+  naming-server:
+    #image: in28min/netflix-eureka-naming-server:0.0.1-SNAPSHOT
+    build:
+      context: eureka-naming-server
+      dockerfile: Dockerfile
+    container_name: naming-server
+    ports:
+      - "8761:8761"
+    restart: always
+    networks:
+      - app-mysql-network
+
+  api-gateway:
+    #image: in28min/netflix-zuul-api-gateway-server:0.0.1-SNAPSHOT
+    build:
+      context: api-gateway
+      dockerfile: Dockerfile
+    container_name: api-gateway
+    ports:
+      - "8765:8765"
+    restart: always
+    depends_on:
+      - naming-server
+    networks:
+      - app-mysql-network
+
+  currency-calculator:
+    #image: in28min/currency-exchange-service:0.0.1-SNAPSHOT
+    build:
+      context: currency-calculator
+      dockerfile: Dockerfile
+    container_name: currency-calculator
+    ports:
+      - "8000:8000"
+    restart: always
+    depends_on:
+      - naming-server
+      - mysql-docker
+    networks:
+      - app-mysql-network
+
+  currency-conversion:
+    #image: in28min/currency-conversion-service:0.0.1-SNAPSHOT
+    build:
+      context: currency-conversion
+      dockerfile: Dockerfile
+    container_name: currency-conversion
+    ports:
+      - "8100:8100"
+    restart: always
+    depends_on:
+      - currency-calculator
+      - naming-server
+    networks:
+      - app-mysql-network
+ 
+volumes:
+  mysql-database-data-volume:
+    name: mysql-database-data-volume
+ 
+# Networks to be created to facilitate communication between containers
+networks:
+  app-mysql-network:
+    name: app-mysql-network
