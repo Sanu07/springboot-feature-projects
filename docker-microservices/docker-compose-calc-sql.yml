@@ -1,21 +1,5 @@
 version: '3.7'
 services:
-
-  mysql-docker:
-    image: "mysql"
-    restart: always
-    container_name: mysql-docker
-    ports:
-      - 3307:3306
-    environment:
-      MYSQL_DATABASE: test
-      MYSQL_PASSWORD: root
-      MYSQL_ROOT_PASSWORD: root
-    networks:
-      - app-mysql-network
-    volumes:
-      - mysql-database-data-volume:/var/lib/mysql
-      
   naming-server:
     build:
       context: eureka-naming-server
@@ -24,11 +8,31 @@ services:
     image: naming-server
     ports:
       - "8761:8761"
+    expose:
+      # Opens port 3306 on the container
+      - '8761'
     restart: always
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-docker:3306/test?autoReconnect=true&useSSL=false
-      SPRING_DATASOURCE_USERNAME: "root"
-      SPRING_DATASOURCE_PASSWORD: "root"
+      EUREKA_INSTANCE_HOSTNAME: naming-server
+      EUREKA_INSTANCE_PREFERIPADDRESS: "false"
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://192.168.0.16:8761/eureka
+    networks:
+      - app-mysql-network
+
+  mysql-docker:
+    image: 'mysql'
+    container_name: mysql-docker
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_PASSWORD=root
+      - MYSQL_DATABASE=test
+    ports:
+      - "3307:3306"
+    expose:
+      # Opens port 3306 on the container
+      - '3306'
+    volumes:
+      - mysql-database-volume:/var/lib/mysql
     networks:
       - app-mysql-network
 
@@ -42,29 +46,30 @@ services:
       - "8765:8765"
     restart: always
     environment:
-      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://naming-server:8761/eureka
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://192.168.0.16:8761/eureka
     depends_on:
       - naming-server
     networks:
       - app-mysql-network
 
   currency-calculator:
-    build:
-      context: currency-calculator
-      dockerfile: Dockerfile
-    container_name: currency-calculator
     image: currency-calculator
+    container_name: currency-calculator
+    build:
+      context: "currency-calculator"
+      dockerfile: "DockerFile"
     ports:
       - "8000:8000"
-    restart: always
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-docker:3306/test?autoReconnect=true&useSSL=false
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-docker:3306/test?allowPublicKeyRetrieval=true&useSSL=false
       SPRING_DATASOURCE_USERNAME: "root"
       SPRING_DATASOURCE_PASSWORD: "root"
-      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://naming-server:8761/eureka
-    depends_on:
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://192.168.0.16:8761/eureka
+    links:
       - naming-server
+    depends_on:
       - mysql-docker
+      - naming-server
     networks:
       - app-mysql-network
 
@@ -78,18 +83,20 @@ services:
       - "8100:8100"
     restart: always
     environment:
-      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://naming-server:8761/eureka
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://192.168.0.16:8761/eureka
     depends_on:
       - currency-calculator
       - naming-server
     networks:
       - app-mysql-network
- 
+
 volumes:
-  mysql-database-data-volume:
-    name: mysql-database-data-volume
+  mysql-database-volume:
+    name: mysql-database-volume
+    external: true
  
 # Networks to be created to facilitate communication between containers
 networks:
   app-mysql-network:
     name: app-mysql-network
+    external: true
