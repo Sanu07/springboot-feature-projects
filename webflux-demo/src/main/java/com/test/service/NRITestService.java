@@ -1,8 +1,11 @@
 package com.test.service;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
+import java.util.function.Function;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.r2dbc.core.DatabaseClient;
@@ -43,20 +46,21 @@ public class NRITestService {
 	@SuppressWarnings("deprecation")
 	public Flux<NRI> getData() {
 		DatabaseClient client = connector.createConnection();
-		return client.execute("SELECT * FROM NRI").map((row) -> {
-			NRI nri = null;
-			try {
-				nri = NRI.builder().id(row.get("id", Long.class)).trackers(
-						mapper.readValue(row.get("trackers", String.class), new TypeReference<List<Tracker>>() {
-						})).milestones(mapper.readValue(row.get("milestones", String.class),
-								new TypeReference<Map<String, Milestone>>() {
-								}))
-						.build();
-			} catch (JsonProcessingException e) {
-				e.printStackTrace();
-			}
-			return nri;
-		}).all();
+//		return client.execute("SELECT * FROM NRI").map((row) -> {
+//			NRI nri = null;
+//			try {
+//				nri = NRI.builder().id(row.get("id", Long.class)).trackers(
+//						mapper.readValue(row.get("trackers", String.class), new TypeReference<List<Tracker>>() {
+//						})).milestones(mapper.readValue(row.get("milestones", String.class),
+//								new TypeReference<Map<String, Milestone>>() {
+//								}))
+//						.build();
+//			} catch (JsonProcessingException e) {
+//				e.printStackTrace();
+//			}
+//			return nri;
+//		}).all();
+		return null;
 	}
 
 	@SuppressWarnings("deprecation")
@@ -65,15 +69,18 @@ public class NRITestService {
 		// client.execute("");
 		// return repo.saveData(data.getId(),
 		// mapper.writeValueAsString(data.getData()));
-		mapper.setVisibility(mapper.getSerializationConfig().getDefaultVisibilityChecker()
-				.withFieldVisibility(JsonAutoDetect.Visibility.ANY).withGetterVisibility(JsonAutoDetect.Visibility.NONE)
-				.withSetterVisibility(JsonAutoDetect.Visibility.NONE)
-				.withCreatorVisibility(JsonAutoDetect.Visibility.NONE));
-		DatabaseClient client = connector.createConnection();
-		client.execute("INSERT INTO NRI (ID, TRACKERS, MILESTONES) VALUES($1, $2::JSON, $3::JSON)")
-				.bind("$1", data.getId()).bind("$2", mapper.writeValueAsString(data.getTrackers()))
-				.bind("$3", mapper.writeValueAsString(data.getMilestones())).fetch().first().subscribe();
-		return Mono.just(data);
+		
+		
+//		mapper.setVisibility(mapper.getSerializationConfig().getDefaultVisibilityChecker()
+//				.withFieldVisibility(JsonAutoDetect.Visibility.ANY).withGetterVisibility(JsonAutoDetect.Visibility.NONE)
+//				.withSetterVisibility(JsonAutoDetect.Visibility.NONE)
+//				.withCreatorVisibility(JsonAutoDetect.Visibility.NONE));
+//		DatabaseClient client = connector.createConnection();
+//		client.execute("INSERT INTO NRI (ID, TRACKERS, MILESTONES) VALUES($1, $2::JSON, $3::JSON)")
+//				.bind("$1", data.getId()).bind("$2", mapper.writeValueAsString(data.getTrackers()))
+//				.bind("$3", mapper.writeValueAsString(data.getMilestones())).fetch().first().subscribe();
+//		return Mono.just(data);
+		return null;
 	}
 
 	public void update(String date) {
@@ -88,6 +95,35 @@ public class NRITestService {
 	}
 
 	public Flux<Status> getStatus() {
-		return null;
+		return Flux.just(Status.builder().field("F1").value("V1").build(),
+				Status.builder().field("F2").value("V2").build(),
+				Status.builder().field("F11").value("V11").build());
+	}
+	
+	public Mono<Long> saveNRI(NRI nri) {
+		DatabaseClient client = connector.createConnection();
+		return client.insert().into(NRI.class)
+                .using(nri)
+                .fetch()
+                .one()
+                .map(m ->(Long) m.get("id"));
+	}
+	
+	public Flux<NRI> getNRIData() {
+		return Flux.just(NRI.builder().id(1L).name("test-name1").build(),
+				NRI.builder().id(2L).name("test-name2").build(),
+				NRI.builder().id(3L).name("test-name3").build(),
+				NRI.builder().id(4L).name("test-name4").build(),
+				NRI.builder().id(5L).name("test-name5").build());
+	}
+	
+	public String getNRIData2() throws InterruptedException, ExecutionException {
+		Flux<NRI> nris = repo.findAll();
+		List<NRI> list = nris.collectList().toFuture().get();
+		System.out.println(list);
+		boolean anyMatch = list.stream().anyMatch(n -> n.getId() % 5 == 0);
+		if (anyMatch) return "Present";
+		else return "Not present";
+		
 	}
 }

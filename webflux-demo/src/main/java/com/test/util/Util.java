@@ -1,5 +1,7 @@
 package com.test.util;
 
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -13,9 +15,22 @@ public class Util {
 
 	public static void main(String[] args) {
 		Util util = new Util();
-		util.changeListToMap();
+		// util.changeListToMap();
+		// util.checkReduce();
+		util.checkDouble();
 	}
 	
+	private void checkDouble() {
+		double progress = 0.756;
+		progress *= 100;
+		DecimalFormat df = new DecimalFormat("#");
+		BigDecimal bd = new BigDecimal(df.format(progress));
+		System.out.println(df.format(progress));
+		System.out.println(bd.intValue());
+		long round = Math.round(progress);
+		System.out.println(round);
+	}
+
 	private void changeListToMap() {
 		List<MilestoneScopeData> list = Arrays.asList(
 				MilestoneScopeData.builder().id(1).field("F1").vallue("V1").build(),
@@ -50,5 +65,12 @@ public class Util {
 		System.out.println(milestoneScopeData.getField());
 		MilestoneScopeData milestone = MilestoneScopeData.builder().field(milestoneScopeData.getField()).vallue(null).build();
 		System.out.println(milestone);
+	}
+	
+	private void checkReduce() {
+		Integer reduce = Arrays.asList(1, 2, 3, 4).parallelStream().reduce(10, (a, b) -> a + b,  (a, b) -> {
+			return a + b;
+		});
+		System.out.println(reduce);
 	}
 }
