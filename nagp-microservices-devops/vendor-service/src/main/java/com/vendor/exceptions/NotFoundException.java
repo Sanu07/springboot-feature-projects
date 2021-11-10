@@ -1,0 +1,14 @@
+package com.vendor.exceptions;
+
+public class NotFoundException extends RuntimeException {
+
+	private static final long serialVersionUID = 1L;
+
+	public NotFoundException(String message, Exception ex) {
+		super(message, ex);
+	}
+
+	public NotFoundException(String message) {
+		super(message);
+	}
+}

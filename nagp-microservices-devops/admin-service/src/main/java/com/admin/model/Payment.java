@@ -13,9 +13,9 @@ import lombok.Data;
 public class Payment {
 
 	private Long id;
-	private BigInteger amountPaidToVendor;
-	private BigInteger amountOfShare;
-	private boolean status;
+	private BigInteger amountPaid;
+	private BigInteger dueAmount;
+	private LocalDateTime paidAt;
+	private boolean paymentStatus;
 	private PaymentMode mode;
-	private LocalDateTime createdAt;
 }

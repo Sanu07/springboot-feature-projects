@@ -14,10 +14,5 @@ import lombok.Data;
 public class Package {
 
 	private Long id;
-	private Category category;
-	private Service profession;
-	private BigInteger price;
 	private List<IncludedService> includedServices;
-	private List<CustomerReview> reviews;
-	private Rating rating;
 }

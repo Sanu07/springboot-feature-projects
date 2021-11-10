@@ -1,5 +1,7 @@
 package com.consumer.model;
 
+import java.util.List;
+
 import com.consumer.enums.Service;
 
 import lombok.Builder;
@@ -12,5 +14,5 @@ public class ServiceExpert {
 	private Long expertId;
 	private String name;
 	private Address address;
-	private Service service;
+	private List<Service> services;
 }

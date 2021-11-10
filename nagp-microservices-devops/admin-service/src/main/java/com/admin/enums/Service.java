@@ -1,4 +1,4 @@
-package com.vendor.enums;
+package com.admin.enums;
 
 public enum Service {
 

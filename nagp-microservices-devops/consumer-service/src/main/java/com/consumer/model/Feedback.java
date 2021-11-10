@@ -11,6 +11,6 @@ public class Feedback {
 
 	private Long id;
 	private int ratingValue;
-	private String desc;
+	private String description;
 	private LocalDateTime createdAt;
 }

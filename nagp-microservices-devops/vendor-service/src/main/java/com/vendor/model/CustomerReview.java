@@ -13,6 +13,7 @@ public class CustomerReview {
 	private Long customerId;
 	private Long vendorId;
 	private Long expertId;
+	private Long bookingId;
 	private int ratingValue;
 	private String feedback;
 	private LocalDateTime timeStamp;

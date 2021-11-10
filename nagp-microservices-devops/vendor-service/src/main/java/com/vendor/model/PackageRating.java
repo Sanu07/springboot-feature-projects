@@ -7,9 +7,9 @@ import lombok.Data;
 
 @Data
 @Builder
-public class Rating {
+public class PackageRating {
 
 	private Long id;
-	private int value;
+	private float value;
 	private BigInteger totalRatings;
 }

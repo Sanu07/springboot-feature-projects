@@ -3,6 +3,7 @@ package com.consumer.model;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import com.consumer.enums.BookingStatus;
 import com.consumer.enums.Service;
 
 import lombok.Builder;
@@ -13,10 +14,11 @@ import lombok.Data;
 public class BookingDetails {
 
 	private Long id;
-	private ServiceExpert serviceExpert;
 	private LocalDateTime bookingRaisedAt;
-	private boolean acceptanceStatus;
-	private List<String> services;
-	private Feedback feedback;
-	private Payment payment;
+	private List<Service> services;
+	private Long feedbackId;
+	private Long paymentId;
+	private Long customerId;
+	private Long serviceExpertId;
+	private BookingStatus status;
 }

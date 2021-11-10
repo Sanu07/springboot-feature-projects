@@ -1,5 +1,10 @@
 package com.vendor.model;
 
+import java.math.BigInteger;
+import java.util.List;
+
+import com.vendor.enums.Service;
+
 import lombok.Builder;
 import lombok.Data;
 
@@ -8,5 +13,7 @@ import lombok.Data;
 public class IncludedService {
 
 	private Long id;
-	private String description;
+	List<String> descriptions;
+	private Service service;
+	private BigInteger price;
 }
