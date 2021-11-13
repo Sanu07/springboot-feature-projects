@@ -1,4 +1,4 @@
-package com.admin.service.proxy;
+package com.admin.proxy.service;
 
 import java.util.List;
 

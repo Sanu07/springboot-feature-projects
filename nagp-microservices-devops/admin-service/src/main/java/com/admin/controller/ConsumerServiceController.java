@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.admin.model.Customer;
-import com.admin.service.proxy.ConsumerServiceProxy;
+import com.admin.proxy.service.ConsumerServiceProxy;
 
 @RestController
 public class ConsumerServiceController {

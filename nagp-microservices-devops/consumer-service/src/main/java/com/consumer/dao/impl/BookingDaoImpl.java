@@ -50,10 +50,12 @@ public class BookingDaoImpl implements BookingDao {
 
 	@Override
 	public BookingDetails save(BookingDetails booking) {
-		if (Objects.isNull(booking.getId())) {
-			throw new UnsupportedOperationException();
+		if (Objects.isNull(booking.getId()) || booking.getId() > this.getSize() + 1) {
+			booking.setId(this.getSize() + 1L);
+			this.bookings.add(booking);
+		} else {
+			this.bookings.set(booking.getId().intValue(), booking);
 		}
-		this.bookings.add(booking);
 		return booking;
 	}
 
