@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+import org.springframework.stereotype.Repository;
+
 import com.vendor.dao.ServiceExpertDao;
 import com.vendor.enums.City;
 import com.vendor.enums.Country;
@@ -19,11 +21,12 @@ import com.vendor.model.ServiceExpert;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class ServiceExpertDaoImpl implements ServiceExpertDao {
+@Repository
+public class ExpertDaoImpl implements ServiceExpertDao {
 
 	private List<ServiceExpert> serviceExperts;
 
-	public ServiceExpertDaoImpl() {
+	public ExpertDaoImpl() {
 		this.serviceExperts = new ArrayList<>();
 		this.serviceExperts.add(ServiceExpert.builder().id(1L)
 				.address(Address.builder().id(1L).addressLine("11/1 street lane").pinCode(25896L)
@@ -65,7 +68,7 @@ public class ServiceExpertDaoImpl implements ServiceExpertDao {
 		if (serviceExpert.isPresent()) {
 			return serviceExpert.get();
 		}
-		throw new NotFoundException("No ServiceExpert with id " + identifier + " is found");
+		throw new NotFoundException("No Service Expert with id " + identifier + " is found");
 	}
 
 	@Override
@@ -74,7 +77,7 @@ public class ServiceExpertDaoImpl implements ServiceExpertDao {
 		if (isDeleted) {
 			log.info("ServiceExpert with id " + identifier + " is deleted successfully");
 		} else {
-			throw new NotFoundException("No ServiceExpert with id " + identifier + " is found");
+			throw new NotFoundException("No Service Expert with id " + identifier + " is found");
 		}
 	}
 

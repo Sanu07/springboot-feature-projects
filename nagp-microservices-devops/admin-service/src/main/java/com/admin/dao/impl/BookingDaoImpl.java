@@ -63,7 +63,7 @@ public class BookingDaoImpl implements BookingDao {
 		if (booking.isPresent()) {
 			return booking.get();
 		}
-		throw new NotFoundException("No BookingDetails with id " + identifier + " is found");
+		throw new NotFoundException("No Booking Details with id " + identifier + " is found");
 	}
 
 	@Override

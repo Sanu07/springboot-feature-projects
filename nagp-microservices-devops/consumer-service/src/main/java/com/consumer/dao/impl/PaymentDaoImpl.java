@@ -8,11 +8,14 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+import org.springframework.stereotype.Repository;
+
 import com.consumer.dao.PaymentDao;
 import com.consumer.enums.PaymentMode;
 import com.consumer.exceptions.NotFoundException;
 import com.consumer.model.Payment;
 
+@Repository
 public class PaymentDaoImpl implements PaymentDao {
 
 	List<Payment> payments;

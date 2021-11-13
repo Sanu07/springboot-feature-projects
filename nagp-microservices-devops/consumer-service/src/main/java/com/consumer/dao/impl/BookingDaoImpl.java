@@ -8,12 +8,18 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+import org.springframework.stereotype.Repository;
+
 import com.consumer.dao.BookingDao;
 import com.consumer.enums.BookingStatus;
 import com.consumer.enums.Service;
 import com.consumer.exceptions.NotFoundException;
 import com.consumer.model.BookingDetails;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
+@Repository
 public class BookingDaoImpl implements BookingDao {
 
 	List<BookingDetails> bookings;
@@ -64,5 +70,15 @@ public class BookingDaoImpl implements BookingDao {
 	@Override
 	public int getSize() {
 		return this.bookings.size();
+	}
+
+	@Override
+	public void deleteById(Long identifier) {
+		boolean isDeleted = this.bookings.removeIf(bkng -> bkng.getId().equals(identifier));
+		if (isDeleted) {
+			log.info("Booking with id " + identifier + " is deleted successfully");
+		} else {
+			throw new NotFoundException("No Booking with id " + identifier + " is found");
+		}
 	}
 }

@@ -1,0 +1,54 @@
+=== === === === === === ===
+===
+all - customers ===
+    ===
+    === === === === === ===
+    [{
+        "id": 1,
+        "address": {
+            "id": 1,
+            "addressLine": "11/1 street lane",
+            "city": "GURUGRAM",
+            "state": "HARYANA",
+            "country": "INDIA",
+            "pinCode": 25896
+        },
+        "name": "Victoria",
+        "phone": "3698745210"
+    }, {
+        "id": 2,
+        "address": {
+            "id": 2,
+            "addressLine": "22/2 street lane",
+            "city": "KOLKATA",
+            "state": "WEST_BENGAL",
+            "country": "INDIA",
+            "pinCode": 25896
+        },
+        "name": "Victor",
+        "phone": "2589631470"
+    }, {
+        "id": 3,
+        "address": {
+            "id": 3,
+            "addressLine": "33/3 street lane",
+            "city": "GURUGRAM",
+            "state": "HARYANA",
+            "country": "INDIA",
+            "pinCode": 25896
+        },
+        "name": "Vanessa",
+        "phone": "6985471230"
+    }, {
+        "id": 4,
+        "address": {
+            "id": 4,
+            "addressLine": "44/4 street lane",
+            "city": "KOLKATA",
+            "state": "WEST_BENGAL",
+            "country": "INDIA",
+            "pinCode": 25896
+        },
+        "name": "Valentina",
+        "phone": "2103654789"
+    }]

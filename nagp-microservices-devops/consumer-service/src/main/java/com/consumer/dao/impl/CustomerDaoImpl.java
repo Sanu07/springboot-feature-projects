@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+import org.springframework.stereotype.Repository;
+
 import com.consumer.dao.CustomerDao;
 import com.consumer.enums.City;
 import com.consumer.enums.Country;
@@ -17,6 +19,7 @@ import com.consumer.model.Customer;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
+@Repository
 public class CustomerDaoImpl implements CustomerDao {
 
 	private List<Customer> customers;

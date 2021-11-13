@@ -8,10 +8,13 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+import org.springframework.stereotype.Repository;
+
 import com.consumer.dao.FeedbackDao;
 import com.consumer.exceptions.NotFoundException;
 import com.consumer.model.Feedback;
 
+@Repository
 public class FeedbackDaoImpl implements FeedbackDao {
 
 	List<Feedback> feedbacks;

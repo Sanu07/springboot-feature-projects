@@ -8,12 +8,18 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+import org.springframework.stereotype.Repository;
+
 import com.vendor.dao.PackageDao;
 import com.vendor.enums.Service;
 import com.vendor.exceptions.NotFoundException;
 import com.vendor.model.IncludedService;
 import com.vendor.model.Package;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
+@Repository
 public class PackageDaoImpl implements PackageDao {
 
 	List<Package> packages;
@@ -60,12 +66,12 @@ public class PackageDaoImpl implements PackageDao {
 	}
 
 	@Override
-	public Package save(Package rating) {
-		if (Objects.isNull(rating.getId())) {
+	public Package save(Package pack) {
+		if (Objects.isNull(pack.getId())) {
 			throw new UnsupportedOperationException();
 		}
-		this.packages.add(rating);
-		return rating;
+		this.packages.add(pack);
+		return pack;
 	}
 
 	@Override
@@ -80,5 +86,15 @@ public class PackageDaoImpl implements PackageDao {
 	@Override
 	public int getSize() {
 		return this.packages.size();
+	}
+
+	@Override
+	public void deleteById(Long identifier) {
+		boolean isDeleted = this.packages.removeIf(cust -> cust.getId().equals(identifier));
+		if (isDeleted) {
+			log.info("Package with id " + identifier + " is deleted successfully");
+		} else {
+			throw new NotFoundException("No packages with id " + identifier + " is found");
+		}
 	}
 }
