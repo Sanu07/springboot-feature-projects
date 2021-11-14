@@ -1,6 +1,9 @@
 package com.admin.model;
 
 import java.time.LocalDateTime;
+import java.util.List;
+
+import com.admin.enums.Service;
 
 import lombok.Builder;
 import lombok.Data;
@@ -10,9 +13,10 @@ import lombok.Data;
 public class BookingDetails {
 
 	private Long id;
-	private Customer customer;
-	private ServiceExpert serviceExpert;
-	private Payment paymnent;
 	private LocalDateTime bookingRaisedAt;
-	private LocalDateTime bookingAcceptedAt;
+	private List<Service> services;
+	private Long feedbackId;
+	private Long paymentId;
+	private Long customerId;
+	private ServiceExpert serviceExpert;
 }

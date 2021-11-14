@@ -36,7 +36,7 @@ public class KafkaProducerServiceImpl {
 			@Override
 			public void onSuccess(SendResult<String, String> result) {
 				log.info("=============================================================================================");
-				log.info("Your order {} has been received. We will notify you once a service expert is assigned to you.", value);
+				log.info("Notification to vendor is sent with message details {}", value);
 				log.info("=============================================================================================");
 			}
 		});

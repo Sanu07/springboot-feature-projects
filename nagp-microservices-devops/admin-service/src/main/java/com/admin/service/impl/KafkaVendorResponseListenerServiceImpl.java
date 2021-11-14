@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.admin.constants.AppConstants;
 import com.admin.model.BookingDetails;
+import com.admin.model.VendorResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -16,7 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Slf4j
-public class KafkaBookingListenerServiceImpl implements AcknowledgingMessageListener<String, String> {
+public class KafkaVendorResponseListenerServiceImpl implements AcknowledgingMessageListener<String, String> {
 
 	@Autowired
 	ObjectMapper mapper;
@@ -24,18 +25,19 @@ public class KafkaBookingListenerServiceImpl implements AcknowledgingMessageList
 	@Autowired
 	BookingServiceImpl bookingService;
 	
-	@KafkaListener(topics = { AppConstants.CUSTOMER_SERVICE_BOOKING_TOPIC })
+	@KafkaListener(topics = { AppConstants.VENDOR_RESPONSE_TOPIC })
 	@Override
 	public void onMessage(ConsumerRecord<String, String> consumerRecord, Acknowledgment acknowledgment) {
 		log.info("ConsumerRecord : {} ", consumerRecord);
 		try {
-			BookingDetails bookingDetails = mapper.readValue(consumerRecord.value(), BookingDetails.class);
+			VendorResponse vendorResponse = mapper.readValue(consumerRecord.value(), VendorResponse.class);
+			BookingDetails bookingDetails = bookingService.findById(vendorResponse.getBookingId());
+			bookingDetails.setServiceExpert(vendorResponse.getExpert());
 			bookingService.save(bookingDetails);
-			bookingService.notifyVendors(bookingDetails);
+			bookingService.notifyCustomers(vendorResponse);
 		} catch (JsonProcessingException e) {
 			log.error("Error while reading value ", e);
 		}
 		acknowledgment.acknowledge();
 	}
-	
 }

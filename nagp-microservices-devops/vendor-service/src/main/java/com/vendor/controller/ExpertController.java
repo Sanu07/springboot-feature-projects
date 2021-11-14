@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.vendor.enums.Service;
 import com.vendor.model.ServiceExpert;
 import com.vendor.service.impl.ExpertServiceImpl;
 
@@ -42,5 +43,10 @@ public class ExpertController {
 	public ResponseEntity<Void> deleteExpert(@PathVariable Long id) {
 		service.deleteById(id);
 		return ResponseEntity.status(HttpStatus.ACCEPTED).build();
+	}
+	
+	@GetMapping("profession/{professions}")
+	public ResponseEntity<List<ServiceExpert>> findExpertsByProfession(@PathVariable List<Service> ids) {
+		return ResponseEntity.ok(service.findExpertsByProfession(ids));
 	}
 }

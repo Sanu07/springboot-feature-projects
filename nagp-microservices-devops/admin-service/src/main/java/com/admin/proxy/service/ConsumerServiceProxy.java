@@ -16,4 +16,5 @@ public interface ConsumerServiceProxy {
 	
 	@GetMapping("customers/{id}")
 	public Customer findById(@PathVariable(value = "id") Long id);
+	
 }
