@@ -10,4 +10,5 @@ public interface ExpertService {
 	ServiceExpert findById(Long id);
 	List<ServiceExpert> findAll();
 	void deleteById(Long id);
+	public List<ServiceExpert> findExpertsByProfession(List<com.vendor.enums.Service> ids);
 }

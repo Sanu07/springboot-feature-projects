@@ -35,4 +35,7 @@ public class CustomerServiceImpl implements CustomerService {
 		repo.deleteById(id);
 	}
 
+	public int getTotalCustomers() {
+		return repo.getSize();
+	}
 }

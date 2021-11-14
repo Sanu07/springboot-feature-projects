@@ -33,8 +33,8 @@ public class FeedbackController {
 	}
 	
 	@PostMapping
-	public ResponseEntity<Feedback> saveFeedback(@RequestBody Feedback payment) {
-		return ResponseEntity.status(HttpStatus.CREATED).body(service.save(payment));
+	public ResponseEntity<Feedback> saveFeedback(@RequestBody Feedback feedback) {
+		return ResponseEntity.status(HttpStatus.CREATED).body(service.save(feedback));
 	}
 	
 }

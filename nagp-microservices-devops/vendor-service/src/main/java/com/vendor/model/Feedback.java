@@ -1,4 +1,4 @@
-package com.consumer.model;
+package com.vendor.model;
 
 import java.time.LocalDateTime;
 

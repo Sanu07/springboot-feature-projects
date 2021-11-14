@@ -1,7 +1,7 @@
 package com.admin.service.impl;
 
-import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -47,10 +47,15 @@ public class BookingServiceImpl implements BookingService {
 
 	public void notifyVendors(BookingDetails bookingDetails) {
 		List<ServiceExpert> experts = vendorNotificationService.findExpertsByProfession(bookingDetails.getServices());
-		VendorNotifications vendorNotifications = VendorNotifications.builder().bookingDetails(bookingDetails).createdAt(LocalDateTime.now()).experts(experts)
-				.build();
+		List<ServiceExpert> expertsInSameArea = experts.stream()
+				.filter(expert -> expert.getAddress().getCity()
+						.equalsIgnoreCase(bookingDetails.getCustomer().getAddress().getCity()))
+				.collect(Collectors.toList());
+		VendorNotifications vendorNotifications = VendorNotifications.builder().bookingDetails(bookingDetails)
+				.experts(expertsInSameArea).build();
 		try {
-			kafkaService.sendEvent(AppConstants.VENDOR_NOTIFICATIONS_TOPIC, bookingDetails.getId().toString(), vendorNotifications);
+			kafkaService.sendEvent(AppConstants.VENDOR_NOTIFICATIONS_TOPIC, bookingDetails.getId().toString(),
+					vendorNotifications);
 			log.info("{} Vendors {} are notified", experts.size(), experts);
 		} catch (JsonProcessingException e) {
 			log.error("Error in notifying vendors ", e);

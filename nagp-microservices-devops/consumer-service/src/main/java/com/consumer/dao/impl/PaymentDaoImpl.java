@@ -1,7 +1,5 @@
 package com.consumer.dao.impl;
 
-import java.math.BigInteger;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -11,7 +9,6 @@ import java.util.Optional;
 import org.springframework.stereotype.Repository;
 
 import com.consumer.dao.PaymentDao;
-import com.consumer.enums.PaymentMode;
 import com.consumer.exceptions.NotFoundException;
 import com.consumer.model.Payment;
 
@@ -22,12 +19,6 @@ public class PaymentDaoImpl implements PaymentDao {
 
 	public PaymentDaoImpl() {
 		this.payments = new ArrayList<>();
-		this.payments.add(Payment.builder().id(1L).amountPaid(BigInteger.valueOf(299)).dueAmount(BigInteger.ZERO)
-				.mode(PaymentMode.ONLINE).paidAt(LocalDateTime.now()).build());
-		this.payments.add(Payment.builder().id(2L).amountPaid(BigInteger.valueOf(399)).dueAmount(BigInteger.ZERO)
-				.mode(PaymentMode.ONLINE).paidAt(LocalDateTime.now().plusMinutes(15)).build());
-		this.payments.add(Payment.builder().id(3L).amountPaid(BigInteger.valueOf(499)).dueAmount(BigInteger.ZERO)
-				.mode(PaymentMode.ONLINE).paidAt(LocalDateTime.now().plusHours(1)).build());
 	}
 
 	@Override

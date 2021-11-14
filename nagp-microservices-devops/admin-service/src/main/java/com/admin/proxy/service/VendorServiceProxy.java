@@ -3,7 +3,6 @@ package com.admin.proxy.service;
 import java.util.List;
 
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
@@ -17,7 +16,7 @@ public interface VendorServiceProxy {
 	public List<ServiceExpert> findAll();
 	
 	@GetMapping("experts/{id}")
-	public ServiceExpert findById(@PathVariable(value = "id") Long id);
+	public ServiceExpert findById(@PathVariable(value = "id") Long id);                                                             
 	
 	@GetMapping("experts/profession/{professions}")
 	public List<ServiceExpert> findExpertsByProfession(@PathVariable(value = "professions") List<Service> services);

@@ -17,4 +17,6 @@ public class BookingDetails {
 	private LocalDateTime timeStamp;
 	private boolean acceptanceStatus;
 	private List<Service> services;
+	private ServiceExpert expert;
+	private boolean isAccepted;
 }

@@ -8,6 +8,8 @@ import org.springframework.kafka.support.Acknowledgment;
 import org.springframework.stereotype.Service;
 
 import com.consumer.constants.AppConstants;
+import com.consumer.enums.BookingStatus;
+import com.consumer.model.BookingDetails;
 import com.consumer.model.VendorResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -21,6 +23,8 @@ public class KafkaCustomerNotificationsListenerServiceImpl implements Acknowledg
 	@Autowired
 	ObjectMapper mapper;
 	
+	@Autowired
+	BookingServiceImpl bookingService;
 	
 	@KafkaListener(topics = { AppConstants.CUSTOMER_NOTIFICATIONS_TOPIC })
 	@Override
@@ -30,6 +34,9 @@ public class KafkaCustomerNotificationsListenerServiceImpl implements Acknowledg
 			VendorResponse vendorResponse = mapper.readValue(consumerRecord.value(), VendorResponse.class);
 			log.info("*********Notifying Customers with the expert assigned**********");
 			log.info("{}", vendorResponse.getExpert());
+			BookingDetails bookingDetails = bookingService.findById(vendorResponse.getBookingId());
+			bookingDetails.setStatus(BookingStatus.COMPLETED);
+			bookingService.save(bookingDetails);
 			log.info("***************************************************************");
 		} catch (JsonProcessingException e) {
 			log.error("Error while reading value ", e);

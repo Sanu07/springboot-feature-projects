@@ -1,4 +1,4 @@
-package com.consumer.dao.impl;
+package com.vendor.dao.impl;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -8,9 +8,9 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Repository;
 
-import com.consumer.dao.BookingDao;
-import com.consumer.exceptions.NotFoundException;
-import com.consumer.model.BookingDetails;
+import com.vendor.dao.BookingDao;
+import com.vendor.exceptions.NotFoundException;
+import com.vendor.model.BookingDetails;
 
 import lombok.extern.slf4j.Slf4j;
 

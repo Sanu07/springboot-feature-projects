@@ -14,9 +14,8 @@ public class BookingDetails {
 
 	private Long id;
 	private LocalDateTime bookingRaisedAt;
+	private LocalDateTime bookingAcceptedAt;
 	private List<Service> services;
-	private Long feedbackId;
-	private Long paymentId;
-	private Long customerId;
+	private Customer customer;
 	private ServiceExpert serviceExpert;
 }

@@ -1,7 +1,5 @@
 package com.consumer.dao.impl;
 
-import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -21,12 +19,6 @@ public class FeedbackDaoImpl implements FeedbackDao {
 
 	public FeedbackDaoImpl() {
 		this.feedbacks = new ArrayList<>();
-		this.feedbacks.add(Feedback.builder().createdAt(LocalDateTime.now()).description("The service was good").id(1L)
-				.ratingValue(4).build());
-		this.feedbacks.add(Feedback.builder().createdAt(LocalDateTime.now().plus(1L, ChronoUnit.HOURS))
-				.description("I liked the service but expected more").id(2L).ratingValue(5).build());
-		this.feedbacks.add(Feedback.builder().createdAt(LocalDateTime.now()).description("It was awesome").id(3L)
-				.ratingValue(4).build());
 	}
 
 	@Override

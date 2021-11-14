@@ -1,5 +1,7 @@
 package com.admin.service.impl;
 
+import java.time.LocalDateTime;
+
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -33,6 +35,7 @@ public class KafkaVendorResponseListenerServiceImpl implements AcknowledgingMess
 			VendorResponse vendorResponse = mapper.readValue(consumerRecord.value(), VendorResponse.class);
 			BookingDetails bookingDetails = bookingService.findById(vendorResponse.getBookingId());
 			bookingDetails.setServiceExpert(vendorResponse.getExpert());
+			bookingDetails.setBookingAcceptedAt(LocalDateTime.now());
 			bookingService.save(bookingDetails);
 			bookingService.notifyCustomers(vendorResponse);
 		} catch (JsonProcessingException e) {

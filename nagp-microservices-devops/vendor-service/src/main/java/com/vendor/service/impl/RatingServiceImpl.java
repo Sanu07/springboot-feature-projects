@@ -5,11 +5,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.vendor.dao.impl.ExpertDaoImpl;
 import com.vendor.dao.impl.PackageDaoImpl;
 import com.vendor.model.Package;
-import com.vendor.model.ServiceExpert;
-import com.vendor.service.ExpertService;
 import com.vendor.service.PackageService;
 
 @Service

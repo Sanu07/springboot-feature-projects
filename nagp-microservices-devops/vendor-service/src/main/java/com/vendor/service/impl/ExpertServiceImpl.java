@@ -15,7 +15,7 @@ public class ExpertServiceImpl implements ExpertService {
 
 	@Autowired
 	ExpertDaoImpl repo;
-	
+
 	@Override
 	public ServiceExpert save(ServiceExpert expert) {
 		return repo.save(expert);
@@ -36,9 +36,11 @@ public class ExpertServiceImpl implements ExpertService {
 		repo.deleteById(id);
 	}
 
+	@Override
 	public List<ServiceExpert> findExpertsByProfession(List<com.vendor.enums.Service> ids) {
 		List<ServiceExpert> experts = repo.findAll();
-		return experts.stream().filter(expert -> ids.containsAll(expert.getServices())).collect(Collectors.toUnmodifiableList());
+		return experts.stream().filter(expert -> expert.getServices().containsAll(ids))
+				.collect(Collectors.toUnmodifiableList());
 	}
 
 }

@@ -1,6 +1,7 @@
 package com.consumer.controller;
 
 import java.util.List;
+import java.util.Random;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
@@ -22,6 +23,7 @@ import com.consumer.constants.AppConstants;
 import com.consumer.enums.BookingStatus;
 import com.consumer.model.BookingDetails;
 import com.consumer.service.impl.BookingServiceImpl;
+import com.consumer.service.impl.CustomerServiceImpl;
 import com.consumer.service.impl.KafkaProducerServiceImpl;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
@@ -38,6 +40,9 @@ public class BookingController {
 	@Autowired
 	KafkaProducerServiceImpl kafkaService;
 	
+	@Autowired
+	CustomerServiceImpl customerService;
+	
 	@GetMapping
 	public ResponseEntity<List<BookingDetails>> getAllBookingDetailss() {
 		return ResponseEntity.ok(bookingService.findAll());
@@ -50,6 +55,8 @@ public class BookingController {
 	
 	@PostMapping
 	public ResponseEntity<BookingDetails> saveBookingDetails(@RequestBody BookingDetails booking) {
+		booking.setCustomer(customerService.findById(new Random().nextInt(customerService.getTotalCustomers()) + 0L));
+		booking.setStatus(BookingStatus.PENDING);
 		BookingDetails requestedBookingDetails = bookingService.save(booking);
 		ListenableFuture<SendResult<String, String>> sendEvent = null;
 		try {

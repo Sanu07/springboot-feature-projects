@@ -1,6 +1,5 @@
 package com.admin.model;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 import lombok.Builder;
@@ -12,6 +11,4 @@ public class VendorNotifications {
 
 	private BookingDetails bookingDetails;
 	private List<ServiceExpert> experts;
-	private LocalDateTime createdAt;
-	private LocalDateTime responseReceivedAt;
 }
