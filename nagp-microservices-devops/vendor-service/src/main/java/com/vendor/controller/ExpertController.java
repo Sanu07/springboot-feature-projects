@@ -46,7 +46,7 @@ public class ExpertController {
 	}
 	
 	@GetMapping("profession/{professions}")
-	public ResponseEntity<List<ServiceExpert>> findExpertsByProfession(@PathVariable List<Service> ids) {
-		return ResponseEntity.ok(service.findExpertsByProfession(ids));
+	public ResponseEntity<List<ServiceExpert>> findExpertsByProfession(@PathVariable List<Service> professions) {
+		return ResponseEntity.ok(service.findExpertsByProfession(professions));
 	}
 }

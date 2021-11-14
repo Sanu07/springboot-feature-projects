@@ -47,13 +47,13 @@ public class BookingServiceImpl implements BookingService {
 
 	public void notifyVendors(BookingDetails bookingDetails) {
 		List<ServiceExpert> experts = vendorNotificationService.findExpertsByProfession(bookingDetails.getServices());
-		VendorNotifications.builder().bookingDetails(bookingDetails).createdAt(LocalDateTime.now()).experts(experts)
+		VendorNotifications vendorNotifications = VendorNotifications.builder().bookingDetails(bookingDetails).createdAt(LocalDateTime.now()).experts(experts)
 				.build();
 		try {
-			kafkaService.sendEvent(AppConstants.VENDOR_NOTIFICATIONS_TOPIC, bookingDetails.getId().toString(), experts);
+			kafkaService.sendEvent(AppConstants.VENDOR_NOTIFICATIONS_TOPIC, bookingDetails.getId().toString(), vendorNotifications);
 			log.info("{} Vendors {} are notified", experts.size(), experts);
 		} catch (JsonProcessingException e) {
-			log.error("Error in notifying vendorsm ", e);
+			log.error("Error in notifying vendors ", e);
 		}
 	}
 

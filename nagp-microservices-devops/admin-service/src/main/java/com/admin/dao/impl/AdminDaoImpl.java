@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+import org.springframework.stereotype.Repository;
+
 import com.admin.dao.AdminDao;
 import com.admin.exceptions.NotFoundException;
 import com.admin.model.Admin;
@@ -13,6 +15,7 @@ import com.admin.model.Admin;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
+@Repository
 public class AdminDaoImpl implements AdminDao {
 
 	private List<Admin> admins;

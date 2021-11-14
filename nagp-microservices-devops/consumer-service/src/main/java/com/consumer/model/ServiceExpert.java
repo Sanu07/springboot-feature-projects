@@ -11,7 +11,7 @@ import lombok.Data;
 @Builder
 public class ServiceExpert {
 
-	private Long expertId;
+	private Long id;
 	private String name;
 	private Address address;
 	private List<Service> services;

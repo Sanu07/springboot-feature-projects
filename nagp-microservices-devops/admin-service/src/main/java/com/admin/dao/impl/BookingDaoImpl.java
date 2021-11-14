@@ -6,10 +6,13 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+import org.springframework.stereotype.Repository;
+
 import com.admin.dao.BookingDao;
 import com.admin.exceptions.NotFoundException;
 import com.admin.model.BookingDetails;
 
+@Repository
 public class BookingDaoImpl implements BookingDao {
 
 	List<BookingDetails> bookings;

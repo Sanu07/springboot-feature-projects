@@ -13,12 +13,12 @@ import com.admin.model.ServiceExpert;
 @FeignClient(name = "vendor-service")
 public interface VendorServiceProxy {
 
-	@GetMapping("vendors")
+	@GetMapping("experts")
 	public List<ServiceExpert> findAll();
 	
-	@GetMapping("vendors/{id}")
+	@GetMapping("experts/{id}")
 	public ServiceExpert findById(@PathVariable(value = "id") Long id);
 	
-	@GetMapping("profession/{professions}")
+	@GetMapping("experts/profession/{professions}")
 	public List<ServiceExpert> findExpertsByProfession(@PathVariable(value = "professions") List<Service> services);
 }

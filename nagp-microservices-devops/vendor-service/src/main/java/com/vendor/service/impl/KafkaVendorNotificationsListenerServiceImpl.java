@@ -29,7 +29,7 @@ public class KafkaVendorNotificationsListenerServiceImpl implements Acknowledgin
 		try {
 			VendorNotifications vendorNotifications = mapper.readValue(consumerRecord.value(), VendorNotifications.class);
 			log.info("*****************************Notifying Vendors*************************************");
-			log.info("{}", vendorNotifications.getExperts());
+			log.info("{}", vendorNotifications);
 			log.info("***********************************************************************************");
 		} catch (JsonProcessingException e) {
 			log.error("Error while reading value ", e);
