@@ -18,9 +18,6 @@ import com.consumer.service.impl.BookingServiceImpl;
 import com.consumer.service.impl.CustomerServiceImpl;
 import com.consumer.service.impl.PaymentServiceImpl;
 
-import lombok.extern.slf4j.Slf4j;
-
-@Slf4j
 @RestController
 @RequestMapping("consumers")
 public class ConsumerDashboardController {

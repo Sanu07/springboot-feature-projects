@@ -23,7 +23,6 @@ import com.vendor.service.impl.ExpertServiceImpl;
 import com.vendor.service.impl.KafkaProducerServiceImpl;
 import com.vendor.service.impl.VendorResponseServiceImpl;
 
-import feign.Response;
 import lombok.extern.slf4j.Slf4j;
 
 @RestController
