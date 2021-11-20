@@ -10,7 +10,9 @@ import org.springframework.kafka.support.Acknowledgment;
 import org.springframework.stereotype.Service;
 
 import com.admin.constants.AppConstants;
+import com.admin.dao.impl.BookingDaoImpl;
 import com.admin.model.BookingDetails;
+import com.admin.model.VendorNotifications;
 import com.admin.model.VendorResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -23,16 +25,26 @@ public class KafkaVendorResponseListenerServiceImpl implements AcknowledgingMess
 
 	@Autowired
 	ObjectMapper mapper;
-	
+
 	@Autowired
 	BookingServiceImpl bookingService;
-	
+
+	@Autowired
+	BookingDaoImpl repo;
+
 	@KafkaListener(topics = { AppConstants.VENDOR_RESPONSE_TOPIC })
 	@Override
 	public void onMessage(ConsumerRecord<String, String> consumerRecord, Acknowledgment acknowledgment) {
 		log.info("ConsumerRecord : {} ", consumerRecord);
 		try {
 			VendorResponse vendorResponse = mapper.readValue(consumerRecord.value(), VendorResponse.class);
+			if (!vendorResponse.isAccepted()) {
+				repo.updateVendorsNotifiedMap(vendorResponse);
+				bookingService.notifyVendors(VendorNotifications.builder()
+						.bookingDetails(bookingService.findById(vendorResponse.getBookingId()))
+						.experts(vendorResponse.getExpert()).build());
+				return;
+			}
 			BookingDetails bookingDetails = bookingService.findById(vendorResponse.getBookingId());
 			bookingDetails.setServiceExpert(vendorResponse.getExpert());
 			bookingDetails.setBookingAcceptedAt(LocalDateTime.now());

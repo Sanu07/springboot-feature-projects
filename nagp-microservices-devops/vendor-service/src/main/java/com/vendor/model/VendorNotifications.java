@@ -1,7 +1,5 @@
 package com.vendor.model;
 
-import java.util.List;
-
 import lombok.Builder;
 import lombok.Data;
 
@@ -10,5 +8,5 @@ import lombok.Data;
 public class VendorNotifications {
 
 	private BookingDetails bookingDetails;
-	private List<ServiceExpert> experts;
+	private ServiceExpert experts;
 }

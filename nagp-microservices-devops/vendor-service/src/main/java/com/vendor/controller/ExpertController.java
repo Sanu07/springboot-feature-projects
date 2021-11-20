@@ -18,7 +18,7 @@ import com.vendor.model.ServiceExpert;
 import com.vendor.service.impl.ExpertServiceImpl;
 
 @RestController
-@RequestMapping("experts")
+@RequestMapping("vendors")
 public class ExpertController {
 
 	@Autowired

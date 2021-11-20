@@ -30,6 +30,8 @@ public class BookingServiceImpl implements BookingService {
 	@Autowired
 	KafkaProducerServiceImpl kafkaService;
 
+	List<ServiceExpert> serviceExpertsList;
+	
 	@Override
 	public BookingDetails save(BookingDetails booking) {
 		return repo.save(booking);
@@ -50,13 +52,22 @@ public class BookingServiceImpl implements BookingService {
 		List<ServiceExpert> expertsInSameArea = experts.stream()
 				.filter(expert -> expert.getAddress().getCity()
 						.equalsIgnoreCase(bookingDetails.getCustomer().getAddress().getCity()))
+				.sorted((e1, e2) -> {
+					return Long.compare(Math.abs(e1.getAddress().getPinCode() - bookingDetails.getCustomer().getAddress().getPinCode()),
+							Math.abs(e2.getAddress().getPinCode() - bookingDetails.getCustomer().getAddress().getPinCode()));
+				})
 				.collect(Collectors.toList());
+		repo.saveToVendorsMap(expertsInSameArea, bookingDetails.getId());
 		VendorNotifications vendorNotifications = VendorNotifications.builder().bookingDetails(bookingDetails)
-				.experts(expertsInSameArea).build();
+				.experts(expertsInSameArea.get(0)).build();
+		notifyVendors(vendorNotifications);
+	}
+	
+	public void notifyVendors(VendorNotifications vendorNotifications) {
 		try {
-			kafkaService.sendEvent(AppConstants.VENDOR_NOTIFICATIONS_TOPIC, bookingDetails.getId().toString(),
+			kafkaService.sendEvent(AppConstants.VENDOR_NOTIFICATIONS_TOPIC, vendorNotifications.getBookingDetails().getId().toString(),
 					vendorNotifications);
-			log.info("{} Vendors {} are notified", experts.size(), experts);
+			log.info("event generated for vendor {}", vendorNotifications.getExperts());
 		} catch (JsonProcessingException e) {
 			log.error("Error in notifying vendors ", e);
 		}

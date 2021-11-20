@@ -2,7 +2,9 @@ package com.admin.dao.impl;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -11,11 +13,15 @@ import org.springframework.stereotype.Repository;
 import com.admin.dao.BookingDao;
 import com.admin.exceptions.NotFoundException;
 import com.admin.model.BookingDetails;
+import com.admin.model.ServiceExpert;
+import com.admin.model.VendorResponse;
 
 @Repository
 public class BookingDaoImpl implements BookingDao {
 
 	List<BookingDetails> bookings;
+	
+	Map<Long, List<ServiceExpert>> vendorMap;
 
 	public BookingDaoImpl() {
 		this.bookings = new ArrayList<>();
@@ -48,6 +54,23 @@ public class BookingDaoImpl implements BookingDao {
 	@Override
 	public int getSize() {
 		return this.bookings.size();
+	}
+	
+	public void updateVendorsNotifiedMap(VendorResponse response) {
+		if (response.isAccepted()) {
+			vendorMap.remove(response.getBookingId());
+		} else {
+			List<ServiceExpert> list = vendorMap.get(response.getBookingId());
+			list.remove(response.getExpert());
+			vendorMap.put(response.getBookingId(), list);
+		}
+	}
+	
+	public void saveToVendorsMap(List<ServiceExpert> experts, Long bookingId) {
+		if (Objects.isNull(vendorMap)) {
+			vendorMap = new HashMap<>();
+		}
+		vendorMap.put(bookingId, experts);
 	}
 
 }

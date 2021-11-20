@@ -10,5 +10,5 @@ import lombok.Data;
 public class VendorNotifications {
 
 	private BookingDetails bookingDetails;
-	private List<ServiceExpert> experts;
+	private ServiceExpert experts;
 }
