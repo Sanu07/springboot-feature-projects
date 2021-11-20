@@ -1,5 +1,6 @@
 package com.consumer.controller;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +17,7 @@ import com.consumer.model.Payment;
 import com.consumer.service.impl.PaymentServiceImpl;
 
 @RestController
-@RequestMapping("payments")
+@RequestMapping("consumers/payments")
 public class PaymentController {
 
 	@Autowired
@@ -34,6 +35,7 @@ public class PaymentController {
 	
 	@PostMapping
 	public ResponseEntity<Payment> savePayment(@RequestBody Payment payment) {
+		payment.setPaidAt(LocalDateTime.now());
 		return ResponseEntity.status(HttpStatus.CREATED).body(service.save(payment));
 	}
 	

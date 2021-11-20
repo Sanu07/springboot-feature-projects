@@ -17,7 +17,7 @@ import com.vendor.model.Package;
 import com.vendor.service.impl.PackageServiceImpl;
 
 @RestController
-@RequestMapping("packages")
+@RequestMapping("vendors/packages")
 public class PackageController {
 
 	@Autowired

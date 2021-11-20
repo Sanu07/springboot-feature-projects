@@ -13,7 +13,7 @@ import lombok.Data;
 public class BookingDetails {
 
 	private Long id;
-	private Customer customer;
+	private Consumer customer;
 	private LocalDateTime timeStamp;
 	private boolean acceptanceStatus;
 	private List<Service> services;

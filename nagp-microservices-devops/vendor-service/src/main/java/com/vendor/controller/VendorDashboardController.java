@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -26,6 +28,7 @@ import com.vendor.service.impl.VendorResponseServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 
 @RestController
+@RequestMapping("vendors")
 @Slf4j
 public class VendorDashboardController {
 
@@ -44,7 +47,7 @@ public class VendorDashboardController {
 	@Autowired
 	BookingServiceImpl bookingService;
 
-	@GetMapping("vendors/bookingResponse/vendorID/{id}")
+	@PostMapping("bookingResponse/vendorId/{id}")
 	public void acceptBookingRequest(@PathVariable Long id, @RequestParam String accept, @RequestParam Long bookingId) {
 		boolean isAccepted = Boolean.parseBoolean(accept);
 		ServiceExpert expert = null;
@@ -59,18 +62,18 @@ public class VendorDashboardController {
 		}
 	}
 
-	@GetMapping("vendors/feedbacks/{expertId}")
-	public ResponseEntity<List<Feedback>> getAllFeedbacks(@PathVariable Long expertId) {
+	@GetMapping("feedbacks/vendorId/{vendorId}")
+	public ResponseEntity<List<Feedback>> getAllFeedbacks(@PathVariable Long vendorId) {
 		List<VendorResponse> vendorResponses = vendorResponseService.findAll();
-		List<Long> bookingIds = vendorResponses.stream().filter(vRes -> vRes.getExpert().getId().equals(expertId))
+		List<Long> bookingIds = vendorResponses.stream().filter(vRes -> vRes.getExpert().getId().equals(vendorId))
 				.map(VendorResponse::getBookingId).collect(Collectors.toList());
 		List<Feedback> feedbacks = consumerProxy.findAllFeedbacks();
-		List<Feedback> res = feedbacks.stream().filter(fd -> bookingIds.contains(fd.getId()))
+		List<Feedback> res = feedbacks.stream().filter(bkng -> bookingIds.contains(bkng.getId()))
 				.collect(Collectors.toList());
 		return ResponseEntity.ok(res);
 	}
 
-	@GetMapping("vendors/bookingHistory/{vendorId}")
+	@GetMapping("bookingHistory/vendorId/{vendorId}")
 	public ResponseEntity<List<BookingDetails>> getAllBookings(@PathVariable Long vendorId) {
 		List<BookingDetails> res = bookingService.findAll().stream()
 				.filter(bk -> bk.getExpert().getId().equals(vendorId)).collect(Collectors.toList());

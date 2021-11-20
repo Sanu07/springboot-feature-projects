@@ -24,7 +24,7 @@ public class KafkaBookingListenerServiceImpl implements AcknowledgingMessageList
 	@Autowired
 	BookingServiceImpl bookingService;
 	
-	@KafkaListener(topics = { AppConstants.CUSTOMER_SERVICE_BOOKING_TOPIC })
+	@KafkaListener(topics = { AppConstants.CONSUMER_SERVICE_BOOKING_TOPIC })
 	@Override
 	public void onMessage(ConsumerRecord<String, String> consumerRecord, Acknowledgment acknowledgment) {
 		log.info("ConsumerRecord : {} ", consumerRecord);

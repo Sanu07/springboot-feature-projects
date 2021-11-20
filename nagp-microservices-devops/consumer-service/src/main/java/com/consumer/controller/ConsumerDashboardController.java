@@ -15,7 +15,7 @@ import com.consumer.model.Package;
 import com.consumer.model.Payment;
 import com.consumer.service.VendorServiceProxy;
 import com.consumer.service.impl.BookingServiceImpl;
-import com.consumer.service.impl.CustomerServiceImpl;
+import com.consumer.service.impl.ConsumerServiceImpl;
 import com.consumer.service.impl.PaymentServiceImpl;
 
 @RestController
@@ -23,7 +23,7 @@ import com.consumer.service.impl.PaymentServiceImpl;
 public class ConsumerDashboardController {
 
 	@Autowired
-	CustomerServiceImpl customerService;
+	ConsumerServiceImpl customerService;
 
 	@Autowired
 	PaymentServiceImpl paymentService;

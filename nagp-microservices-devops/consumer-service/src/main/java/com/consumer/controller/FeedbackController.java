@@ -1,5 +1,6 @@
 package com.consumer.controller;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +17,7 @@ import com.consumer.model.Feedback;
 import com.consumer.service.impl.FeedbackServiceImpl;
 
 @RestController
-@RequestMapping("feedbacks")
+@RequestMapping("consumers/feedbacks")
 public class FeedbackController {
 
 	@Autowired
@@ -34,6 +35,7 @@ public class FeedbackController {
 	
 	@PostMapping
 	public ResponseEntity<Feedback> saveFeedback(@RequestBody Feedback feedback) {
+		feedback.setCreatedAt(LocalDateTime.now());
 		return ResponseEntity.status(HttpStatus.CREATED).body(service.save(feedback));
 	}
 	

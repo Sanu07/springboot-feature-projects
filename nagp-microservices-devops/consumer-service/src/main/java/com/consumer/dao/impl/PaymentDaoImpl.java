@@ -28,10 +28,12 @@ public class PaymentDaoImpl implements PaymentDao {
 
 	@Override
 	public Payment save(Payment payment) {
-		if (Objects.isNull(payment.getId())) {
-			throw new UnsupportedOperationException();
+		if (Objects.isNull(payment.getId()) || payment.getId() > this.getSize()) {
+			payment.setId(this.getSize() + 1L);
+			this.payments.add(payment);
+		} else {
+			this.payments.set(payment.getId().intValue(), payment);
 		}
-		this.payments.add(payment);
 		return payment;
 	}
 

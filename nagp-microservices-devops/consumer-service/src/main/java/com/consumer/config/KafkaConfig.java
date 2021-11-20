@@ -12,7 +12,7 @@ public class KafkaConfig {
 
 	@Bean
     public NewTopic bookingTopic(){
-        return TopicBuilder.name(AppConstants.CUSTOMER_SERVICE_BOOKING_TOPIC)
+        return TopicBuilder.name(AppConstants.CONSUMER_SERVICE_BOOKING_TOPIC)
                 .partitions(3)
                 .replicas(1)
                 .build();

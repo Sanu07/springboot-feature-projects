@@ -11,9 +11,9 @@ import com.consumer.model.ServiceExpert;
 @FeignClient(name = "vendor-service")
 public interface VendorServiceProxy {
 
-	@GetMapping("experts")
+	@GetMapping("vendors")
 	public List<ServiceExpert> findAllExperts();
 	
-	@GetMapping("packages")
+	@GetMapping("vendors/packages")
 	public List<Package> findAllPackages();
 }

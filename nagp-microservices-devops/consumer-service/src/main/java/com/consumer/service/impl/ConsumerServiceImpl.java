@@ -5,28 +5,28 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.consumer.dao.impl.CustomerDaoImpl;
-import com.consumer.model.Customer;
-import com.consumer.service.CustomerService;
+import com.consumer.dao.impl.ConsumerDaoImpl;
+import com.consumer.model.Consumer;
+import com.consumer.service.ConsumerService;
 
 @Service
-public class CustomerServiceImpl implements CustomerService {
+public class ConsumerServiceImpl implements ConsumerService {
 
 	@Autowired
-	CustomerDaoImpl repo;
+	ConsumerDaoImpl repo;
 	
 	@Override
-	public Customer save(Customer customer) {
+	public Consumer save(Consumer customer) {
 		return repo.save(customer);
 	}
 
 	@Override
-	public Customer findById(Long id) {
+	public Consumer findById(Long id) {
 		return repo.findById(id);
 	}
 
 	@Override
-	public List<Customer> findAll() {
+	public List<Consumer> findAll() {
 		return repo.findAll();
 	}
 

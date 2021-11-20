@@ -17,6 +17,6 @@ public class BookingDetails {
 	private LocalDateTime bookingRaisedAt;
 	private List<Service> services;
 	private ServiceExpert serviceExpert;
-	private Customer customer;
+	private Consumer customer;
 	private BookingStatus status;
 }

@@ -1,11 +1,11 @@
-package com.admin.model;
+package com.vendor.model;
 
 import lombok.Builder;
 import lombok.Data;
 
 @Data
 @Builder
-public class Customer {
+public class Consumer {
 
 	private Long id;
 	private Address address;

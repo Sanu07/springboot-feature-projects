@@ -13,28 +13,28 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.consumer.model.Customer;
-import com.consumer.service.impl.CustomerServiceImpl;
+import com.consumer.model.Consumer;
+import com.consumer.service.impl.ConsumerServiceImpl;
 
 @RestController
-@RequestMapping("customers")
-public class CustomerController {
+@RequestMapping("consumers")
+public class ConsumerController {
 
 	@Autowired
-	CustomerServiceImpl service;
+	ConsumerServiceImpl service;
 	
 	@GetMapping
-	public ResponseEntity<List<Customer>> getAllCustomers() {
+	public ResponseEntity<List<Consumer>> getAllCustomers() {
 		return ResponseEntity.ok(service.findAll());
 	}
 	
 	@GetMapping("{id}")
-	public ResponseEntity<Customer> getCustomer(@PathVariable Long id) {
+	public ResponseEntity<Consumer> getCustomer(@PathVariable Long id) {
 		return ResponseEntity.ok(service.findById(id));
 	}
 	
 	@PostMapping
-	public ResponseEntity<Customer> saveCustomer(@RequestBody Customer customer) {
+	public ResponseEntity<Consumer> saveCustomer(@RequestBody Consumer customer) {
 		return ResponseEntity.status(HttpStatus.CREATED).body(service.save(customer));
 	}
 	

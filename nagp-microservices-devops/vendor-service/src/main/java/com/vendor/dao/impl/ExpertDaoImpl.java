@@ -55,10 +55,12 @@ public class ExpertDaoImpl implements ServiceExpertDao {
 
 	@Override
 	public ServiceExpert save(ServiceExpert serviceExpert) {
-		if (Objects.isNull(serviceExpert.getId())) {
-			throw new UnsupportedOperationException();
+		if (Objects.isNull(serviceExpert.getId()) || serviceExpert.getId() > this.getSize()) {
+			serviceExpert.setId(this.getSize() + 1L);
+			this.serviceExperts.add(serviceExpert);
+		} else {
+			this.serviceExperts.set(serviceExpert.getId().intValue(), serviceExpert);
 		}
-		this.serviceExperts.add(serviceExpert);
 		return serviceExpert;
 	}
 

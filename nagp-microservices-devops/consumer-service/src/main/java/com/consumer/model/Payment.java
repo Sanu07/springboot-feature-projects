@@ -15,7 +15,6 @@ public class Payment {
 	private Long id;
 	private Long bookingId;
 	private BigInteger amountPaid;
-	private BigInteger dueAmount;
 	private LocalDateTime paidAt;
 	private boolean paymentStatus;
 	private PaymentMode mode;

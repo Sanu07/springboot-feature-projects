@@ -31,7 +31,7 @@ public class BookingDaoImpl implements BookingDao {
 
 	@Override
 	public BookingDetails save(BookingDetails booking) {
-		if (Objects.isNull(booking.getId()) || booking.getId() > this.getSize() + 1) {
+		if (Objects.isNull(booking.getId()) || booking.getId() > this.getSize()) {
 			booking.setId(this.getSize() + 1L);
 			this.bookings.add(booking);
 		} else {

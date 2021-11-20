@@ -7,7 +7,7 @@ import lombok.Data;
 
 @Data
 @Builder
-public class CustomerReview {
+public class ConsumerReview {
 
 	private Long id;
 	private Long customerId;

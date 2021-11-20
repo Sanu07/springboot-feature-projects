@@ -18,7 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Slf4j
-public class KafkaCustomerNotificationsListenerServiceImpl implements AcknowledgingMessageListener<String, String> {
+public class KafkaConsumerNotificationsListenerServiceImpl implements AcknowledgingMessageListener<String, String> {
 
 	@Autowired
 	ObjectMapper mapper;
@@ -26,7 +26,7 @@ public class KafkaCustomerNotificationsListenerServiceImpl implements Acknowledg
 	@Autowired
 	BookingServiceImpl bookingService;
 	
-	@KafkaListener(topics = { AppConstants.CUSTOMER_NOTIFICATIONS_TOPIC })
+	@KafkaListener(topics = { AppConstants.CONSUMER_NOTIFICATIONS_TOPIC })
 	@Override
 	public void onMessage(ConsumerRecord<String, String> consumerRecord, Acknowledgment acknowledgment) {
 		log.info("ConsumerRecord : {} ", consumerRecord);

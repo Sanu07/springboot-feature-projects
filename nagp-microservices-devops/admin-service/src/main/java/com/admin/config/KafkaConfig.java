@@ -12,7 +12,7 @@ public class KafkaConfig {
 
 	@Bean
     public NewTopic customerNotificationTopic(){
-        return TopicBuilder.name(AppConstants.CUSTOMER_NOTIFICATIONS_TOPIC)
+        return TopicBuilder.name(AppConstants.CONSUMER_NOTIFICATIONS_TOPIC)
                 .partitions(3)
                 .replicas(1)
                 .build();

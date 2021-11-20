@@ -28,10 +28,12 @@ public class FeedbackDaoImpl implements FeedbackDao {
 
 	@Override
 	public Feedback save(Feedback feedback) {
-		if (Objects.isNull(feedback.getId())) {
-			throw new UnsupportedOperationException();
+		if (Objects.isNull(feedback.getId()) || feedback.getId() > this.getSize()) {
+			feedback.setId(this.getSize() + 1L);
+			this.feedbacks.add(feedback);
+		} else {
+			this.feedbacks.set(feedback.getId().intValue(), feedback);
 		}
-		this.feedbacks.add(feedback);
 		return feedback;
 	}
 

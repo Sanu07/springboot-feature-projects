@@ -75,7 +75,7 @@ public class BookingServiceImpl implements BookingService {
 
 	public void notifyCustomers(VendorResponse vendorResponse) {
 		try {
-			kafkaService.sendEvent(AppConstants.CUSTOMER_NOTIFICATIONS_TOPIC, vendorResponse.getBookingId().toString(),
+			kafkaService.sendEvent(AppConstants.CONSUMER_NOTIFICATIONS_TOPIC, vendorResponse.getBookingId().toString(),
 					vendorResponse);
 			log.info("Customer has been assigned an expert {} for booking Id {}", vendorResponse.getExpert(),
 					vendorResponse.getBookingId());
