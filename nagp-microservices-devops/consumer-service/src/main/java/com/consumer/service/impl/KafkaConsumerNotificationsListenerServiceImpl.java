@@ -30,17 +30,18 @@ public class KafkaConsumerNotificationsListenerServiceImpl implements Acknowledg
 	@Override
 	public void onMessage(ConsumerRecord<String, String> consumerRecord, Acknowledgment acknowledgment) {
 		log.info("ConsumerRecord : {} ", consumerRecord);
+		acknowledgment.acknowledge();
 		try {
 			VendorResponse vendorResponse = mapper.readValue(consumerRecord.value(), VendorResponse.class);
 			log.info("*********Notifying Customers with the expert assigned**********");
 			log.info("{}", vendorResponse.getExpert());
 			BookingDetails bookingDetails = bookingService.findById(vendorResponse.getBookingId());
 			bookingDetails.setStatus(BookingStatus.COMPLETED);
+			bookingDetails.setServiceExpert(vendorResponse.getExpert());
 			bookingService.save(bookingDetails);
 			log.info("***************************************************************");
 		} catch (JsonProcessingException e) {
 			log.error("Error while reading value ", e);
 		}
-		acknowledgment.acknowledge();
 	}
 }

@@ -15,4 +15,5 @@ public class ServiceExpert {
 	private String name;
 	private Address address;
 	private List<Service> services;
+	private double rating;
 }

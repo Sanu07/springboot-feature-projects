@@ -35,7 +35,7 @@ public class BookingDaoImpl implements BookingDao {
 			booking.setId(this.getSize() + 1L);
 			this.bookings.add(booking);
 		} else {
-			this.bookings.set(booking.getId().intValue(), booking);
+			this.bookings.set(booking.getId().intValue() - 1, booking);
 		}
 		return booking;
 	}

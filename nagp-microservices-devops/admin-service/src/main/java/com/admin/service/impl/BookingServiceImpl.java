@@ -57,6 +57,9 @@ public class BookingServiceImpl implements BookingService {
 							Math.abs(e2.getAddress().getPinCode() - bookingDetails.getCustomer().getAddress().getPinCode()));
 				})
 				.collect(Collectors.toList());
+		if (expertsInSameArea.isEmpty()) {
+			expertsInSameArea = experts;
+		}
 		repo.saveToVendorsMap(expertsInSameArea, bookingDetails.getId());
 		VendorNotifications vendorNotifications = VendorNotifications.builder().bookingDetails(bookingDetails)
 				.experts(expertsInSameArea.get(0)).build();

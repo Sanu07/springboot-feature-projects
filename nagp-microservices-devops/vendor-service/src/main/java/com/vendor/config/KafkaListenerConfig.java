@@ -1,4 +1,4 @@
-package com.admin.config;
+package com.vendor.config;
 
 import java.util.HashMap;
 import java.util.Map;

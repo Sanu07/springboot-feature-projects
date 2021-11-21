@@ -32,7 +32,7 @@ public class PaymentDaoImpl implements PaymentDao {
 			payment.setId(this.getSize() + 1L);
 			this.payments.add(payment);
 		} else {
-			this.payments.set(payment.getId().intValue(), payment);
+			this.payments.set(payment.getId().intValue() - 1, payment);
 		}
 		return payment;
 	}

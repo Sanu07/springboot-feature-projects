@@ -34,7 +34,7 @@ public class VendorDashboardController {
 
 	@Autowired
 	ExpertServiceImpl expertService;
-
+	
 	@Autowired
 	KafkaProducerServiceImpl kafkaService;
 
@@ -55,6 +55,10 @@ public class VendorDashboardController {
 		VendorResponse vendorResponse = VendorResponse.builder().bookingId(bookingId).expert(expert)
 				.requestAcceptedAt(LocalDateTime.now()).isAccepted(isAccepted).build();
 		vendorResponseService.save(vendorResponse);
+		ResponseEntity<BookingDetails> responseEntity = consumerProxy.getBookingDetails(bookingId);
+		BookingDetails bookingDetails = responseEntity.getBody();
+		bookingDetails.setExpert(expertService.findById(id));
+		bookingService.save(bookingDetails);
 		try {
 			kafkaService.sendEvent(AppConstants.VENDOR_RESPONSE_TOPIC, bookingId.toString(), vendorResponse);
 		} catch (JsonProcessingException e) {
@@ -75,7 +79,8 @@ public class VendorDashboardController {
 
 	@GetMapping("bookingHistory/vendorId/{vendorId}")
 	public ResponseEntity<List<BookingDetails>> getAllBookings(@PathVariable Long vendorId) {
-		List<BookingDetails> res = bookingService.findAll().stream()
+		List<BookingDetails> bookings = bookingService.findAll();
+		List<BookingDetails> res = bookings.stream()
 				.filter(bk -> bk.getExpert().getId().equals(vendorId)).collect(Collectors.toList());
 		return ResponseEntity.ok(res);
 	}

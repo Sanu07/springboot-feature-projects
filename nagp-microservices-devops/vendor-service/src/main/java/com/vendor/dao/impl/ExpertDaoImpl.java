@@ -59,7 +59,7 @@ public class ExpertDaoImpl implements ServiceExpertDao {
 			serviceExpert.setId(this.getSize() + 1L);
 			this.serviceExperts.add(serviceExpert);
 		} else {
-			this.serviceExperts.set(serviceExpert.getId().intValue(), serviceExpert);
+			this.serviceExperts.set(serviceExpert.getId().intValue() - 1, serviceExpert);
 		}
 		return serviceExpert;
 	}

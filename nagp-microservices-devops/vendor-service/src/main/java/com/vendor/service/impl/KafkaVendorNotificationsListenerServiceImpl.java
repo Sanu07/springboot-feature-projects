@@ -26,6 +26,7 @@ public class KafkaVendorNotificationsListenerServiceImpl implements Acknowledgin
 	@Override
 	public void onMessage(ConsumerRecord<String, String> consumerRecord, Acknowledgment acknowledgment) {
 		log.info("ConsumerRecord : {} ", consumerRecord);
+		acknowledgment.acknowledge();
 		try {
 			VendorNotifications vendorNotifications = mapper.readValue(consumerRecord.value(), VendorNotifications.class);
 			log.info("*****************************Sending Notifications to vendors*************************************");
@@ -34,6 +35,5 @@ public class KafkaVendorNotificationsListenerServiceImpl implements Acknowledgin
 		} catch (JsonProcessingException e) {
 			log.error("Error while reading value ", e);
 		}
-		acknowledgment.acknowledge();
 	}
 }

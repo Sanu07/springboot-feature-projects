@@ -53,10 +53,12 @@ public class ConsumerDaoImpl implements ConsumerDao {
 
 	@Override
 	public Consumer save(Consumer customer) {
-		if (Objects.isNull(customer.getId())) {
-			customer.setId(getSize() + 1L);
+		if (Objects.isNull(customer.getId()) || customer.getId() > this.getSize()) {
+			customer.setId(this.getSize() + 1L);
+			this.customers.add(customer);
+		} else {
+			this.customers.set(customer.getId().intValue() - 1, customer);
 		}
-		this.customers.add(customer);
 		return customer;
 	}
 

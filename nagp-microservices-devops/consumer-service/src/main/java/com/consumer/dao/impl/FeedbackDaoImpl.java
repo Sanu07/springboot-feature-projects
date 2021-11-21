@@ -32,7 +32,7 @@ public class FeedbackDaoImpl implements FeedbackDao {
 			feedback.setId(this.getSize() + 1L);
 			this.feedbacks.add(feedback);
 		} else {
-			this.feedbacks.set(feedback.getId().intValue(), feedback);
+			this.feedbacks.set(feedback.getId().intValue() - 1, feedback);
 		}
 		return feedback;
 	}

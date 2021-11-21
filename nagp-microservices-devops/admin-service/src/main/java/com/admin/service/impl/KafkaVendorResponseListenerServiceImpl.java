@@ -39,6 +39,8 @@ public class KafkaVendorResponseListenerServiceImpl implements AcknowledgingMess
 		try {
 			VendorResponse vendorResponse = mapper.readValue(consumerRecord.value(), VendorResponse.class);
 			if (!vendorResponse.isAccepted()) {
+				log.info("expert {} did not accept booking details with bookingId {}", vendorResponse.getExpert(),
+						vendorResponse.getBookingId());
 				repo.updateVendorsNotifiedMap(vendorResponse);
 				bookingService.notifyVendors(VendorNotifications.builder()
 						.bookingDetails(bookingService.findById(vendorResponse.getBookingId()))

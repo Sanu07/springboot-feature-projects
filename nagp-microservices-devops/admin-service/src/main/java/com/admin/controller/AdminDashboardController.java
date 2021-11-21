@@ -2,6 +2,7 @@ package com.admin.controller;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -19,7 +20,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.admin.model.BookingDetails;
 import com.admin.model.Consumer;
-import com.admin.model.Feedback;
 import com.admin.model.Payment;
 import com.admin.model.ServiceExpert;
 import com.admin.proxy.service.ConsumerServiceProxy;
@@ -90,21 +90,21 @@ public class AdminDashboardController {
 
 	@GetMapping("listVendorsByRating")
 	public ResponseEntity<List<ServiceExpert>> getTopRatedServiceExperts(@RequestParam int top, @RequestParam int asc) {
-		ResponseEntity<List<Feedback>> feedbacks = consumerProxy.getAllFeedbacks();
-		if (Objects.isNull(feedbacks) || Objects.isNull(feedbacks.getBody())) {
+		List<ServiceExpert> expertList = vendorProxy.findAll();
+		if (Objects.isNull(expertList)) {
 			return ResponseEntity.ok().body(new ArrayList<>());
 		}
-		List<Feedback> feedbackList = feedbacks.getBody();
-		int topLimit = feedbackList.size() < top ? feedbackList.size() : top;
-		Map<Long, Double> expertMap = feedbackList.stream().collect(Collectors.groupingBy(Feedback::getServiceExpertId,
-				Collectors.averagingDouble(Feedback::getRatingValue)));
+		int topLimit = expertList.size() < top ? expertList.size() : top;
+		Map<Long, Double> expertMap = expertList.stream().collect(Collectors.groupingBy(ServiceExpert::getId,
+				Collectors.averagingDouble(ServiceExpert::getRating)));
 		Map<Long, Double> sortedByRating = new HashMap<>();
 		if (asc == 1) {
 			sortedByRating = expertMap.entrySet().stream().sorted(Map.Entry.comparingByValue()).collect(
 					Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
 		} else {
-			sortedByRating = expertMap.entrySet().stream().sorted(Map.Entry.comparingByValue()).collect(
+			sortedByRating = expertMap.entrySet().stream().sorted(Map.Entry.comparingByValue(Comparator.reverseOrder())).collect(
 					Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
+			
 		}
 		return ResponseEntity.ok(sortedByRating.entrySet().stream().limit(topLimit).map(se -> {
 			ServiceExpert expert = vendorProxy.findById(se.getKey());
