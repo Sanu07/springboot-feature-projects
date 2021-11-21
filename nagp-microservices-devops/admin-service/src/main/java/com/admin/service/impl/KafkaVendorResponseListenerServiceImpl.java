@@ -1,6 +1,7 @@
 package com.admin.service.impl;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 import com.admin.constants.AppConstants;
 import com.admin.dao.impl.BookingDaoImpl;
 import com.admin.model.BookingDetails;
+import com.admin.model.ServiceExpert;
 import com.admin.model.VendorNotifications;
 import com.admin.model.VendorResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -36,15 +38,22 @@ public class KafkaVendorResponseListenerServiceImpl implements AcknowledgingMess
 	@Override
 	public void onMessage(ConsumerRecord<String, String> consumerRecord, Acknowledgment acknowledgment) {
 		log.info("ConsumerRecord : {} ", consumerRecord);
+		acknowledgment.acknowledge();
 		try {
 			VendorResponse vendorResponse = mapper.readValue(consumerRecord.value(), VendorResponse.class);
 			if (!vendorResponse.isAccepted()) {
 				log.info("expert {} did not accept booking details with bookingId {}", vendorResponse.getExpert(),
 						vendorResponse.getBookingId());
-				repo.updateVendorsNotifiedMap(vendorResponse);
+				ServiceExpert expert = repo.updateVendorsNotifiedMap(vendorResponse);
+				if (Objects.isNull(expert)) {
+					BookingDetails bookingDetails = bookingService.findById(vendorResponse.getBookingId());
+					bookingDetails.setStatus("NO_RESPONSE");
+					bookingService.save(bookingDetails);
+					bookingService.notifyCustomers(vendorResponse);
+				}
 				bookingService.notifyVendors(VendorNotifications.builder()
 						.bookingDetails(bookingService.findById(vendorResponse.getBookingId()))
-						.experts(vendorResponse.getExpert()).build());
+						.experts(expert).build());
 				return;
 			}
 			BookingDetails bookingDetails = bookingService.findById(vendorResponse.getBookingId());
@@ -55,6 +64,5 @@ public class KafkaVendorResponseListenerServiceImpl implements AcknowledgingMess
 		} catch (JsonProcessingException e) {
 			log.error("Error while reading value ", e);
 		}
-		acknowledgment.acknowledge();
 	}
 }

@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.vendor.enums.Service;
 import com.vendor.model.ServiceExpert;
+import com.vendor.service.AdminServiceProxy;
 import com.vendor.service.impl.ExpertServiceImpl;
 
 @RestController
@@ -23,6 +24,9 @@ public class ExpertController {
 
 	@Autowired
 	ExpertServiceImpl service;
+	
+	@Autowired
+	AdminServiceProxy adminProxy;
 	
 	@GetMapping
 	public ResponseEntity<List<ServiceExpert>> getAllExperts() {
@@ -36,7 +40,9 @@ public class ExpertController {
 	
 	@PostMapping
 	public ResponseEntity<ServiceExpert> saveExpert(@RequestBody ServiceExpert expert) {
-		return ResponseEntity.status(HttpStatus.CREATED).body(service.save(expert));
+		ServiceExpert expert2 = service.save(expert);
+		adminProxy.checkForNoResponseBookings(expert2);
+		return ResponseEntity.status(HttpStatus.CREATED).body(expert2);
 	}
 	
 	@DeleteMapping("{id}")

@@ -1,6 +1,7 @@
 package com.admin.service.impl;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -80,8 +81,10 @@ public class BookingServiceImpl implements BookingService {
 		try {
 			kafkaService.sendEvent(AppConstants.CONSUMER_NOTIFICATIONS_TOPIC, vendorResponse.getBookingId().toString(),
 					vendorResponse);
-			log.info("Customer has been assigned an expert {} for booking Id {}", vendorResponse.getExpert(),
-					vendorResponse.getBookingId());
+			if (!Objects.nonNull(vendorResponse.getExpert())) {
+				log.info("Customer has been assigned an expert {} for booking Id {}", vendorResponse.getExpert(),
+						vendorResponse.getBookingId());
+			}
 		} catch (JsonProcessingException e) {
 			log.error("Error in notifying customer ", e);
 		}

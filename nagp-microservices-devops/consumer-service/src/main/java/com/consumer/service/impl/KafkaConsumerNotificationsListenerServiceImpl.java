@@ -1,5 +1,7 @@
 package com.consumer.service.impl;
 
+import java.util.Objects;
+
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -33,6 +35,13 @@ public class KafkaConsumerNotificationsListenerServiceImpl implements Acknowledg
 		acknowledgment.acknowledge();
 		try {
 			VendorResponse vendorResponse = mapper.readValue(consumerRecord.value(), VendorResponse.class);
+			if (Objects.isNull(vendorResponse.getExpert())) {
+				log.info("We apologize!! We don't have the required vendors as of now to serve your request.");
+				BookingDetails bookingDetails = bookingService.findById(vendorResponse.getBookingId());
+				bookingDetails.setStatus(BookingStatus.NO_RESPONSE);
+				bookingService.save(bookingDetails);
+				return;
+			}
 			log.info("*********Notifying Customers with the expert assigned**********");
 			log.info("{}", vendorResponse.getExpert());
 			BookingDetails bookingDetails = bookingService.findById(vendorResponse.getBookingId());

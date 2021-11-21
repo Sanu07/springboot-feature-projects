@@ -56,14 +56,19 @@ public class BookingDaoImpl implements BookingDao {
 		return this.bookings.size();
 	}
 	
-	public void updateVendorsNotifiedMap(VendorResponse response) {
+	public ServiceExpert updateVendorsNotifiedMap(VendorResponse response) {
+		ServiceExpert expert = null;
 		if (response.isAccepted()) {
 			vendorMap.remove(response.getBookingId());
 		} else {
 			List<ServiceExpert> list = vendorMap.get(response.getBookingId());
 			list.remove(response.getExpert());
+			if (!list.isEmpty()) {
+				expert = list.get(0);
+			}
 			vendorMap.put(response.getBookingId(), list);
 		}
+		return expert;
 	}
 	
 	public void saveToVendorsMap(List<ServiceExpert> experts, Long bookingId) {

@@ -18,4 +18,5 @@ public class BookingDetails {
 	private List<Service> services;
 	private Consumer customer;
 	private ServiceExpert serviceExpert;
+	private String status;
 }
