@@ -10,17 +10,23 @@ import java.util.function.Function;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.r2dbc.core.DatabaseClient;
 import org.springframework.data.r2dbc.core.R2dbcEntityTemplate;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.test.config.DBConnector;
+import com.test.entity.FakeJSON;
 import com.test.entity.Milestone;
 import com.test.entity.NRI;
 import com.test.entity.Status;
 import com.test.entity.Tracker;
+import com.test.exception.MyException;
 import com.test.repository.NRITestRepo;
 
 import lombok.extern.slf4j.Slf4j;
@@ -125,5 +131,23 @@ public class NRITestService {
 		if (anyMatch) return "Present";
 		else return "Not present";
 		
+	}
+
+	public Mono<FakeJSON> getPostmanCode() {
+		return getPostmanCodeData(FakeJSON.class);
+	}
+	
+	private <K, T> Mono<K> getPostmanCodeData(Class<K> cls) {
+		//return Mono.error(new MyException("error received from service postman", HttpStatus.BAD_REQUEST));
+		return WebClient.create("https://jsonplaceholder.typicode.com")
+		.get()
+		.uri("todos/1")
+		.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+		.retrieve()
+		.onStatus(HttpStatus::is2xxSuccessful, response -> {
+            return response.bodyToMono(String.class).flatMap(error -> {
+                return Mono.error(new MyException(error));
+            });
+        }).bodyToMono(cls);
 	}
 }

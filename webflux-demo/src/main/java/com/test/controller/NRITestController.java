@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.test.entity.FakeJSON;
 import com.test.entity.NRI;
 import com.test.entity.NRIVendorResponse;
 import com.test.entity.Status;
@@ -182,5 +183,10 @@ public class NRITestController {
 		} else {
 			return "Data is present";
 		}
+	}
+	
+	@PostMapping("postman-code")
+	public Mono<FakeJSON> checkPostmanStatusCode() {
+		return service.getPostmanCode();
 	}
 }
