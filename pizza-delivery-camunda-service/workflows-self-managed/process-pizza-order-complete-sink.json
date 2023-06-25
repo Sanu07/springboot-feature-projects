@@ -1,0 +1,23 @@
+{
+  "name": "process-pizza-order-complete-sink",
+  "config": {
+    "connector.class": "io.zeebe.kafka.connect.ZeebeSinkConnector",
+    "tasks.max": "1",
+    "key.converter": "org.apache.kafka.connect.json.JsonConverter",
+    "key.converter.schemas.enable": false,
+    "value.converter": "org.apache.kafka.connect.json.JsonConverter",
+    "value.converter.schemas.enable": false,
+    "topics": "process-pizza-order-complete",
+
+    "zeebe.client.gateway.address": "192.168.1.5:26500",
+    "zeebe.client.requestTimeout": "10000",
+    "zeebe.client.security.plaintext": true,
+
+    "message.path.messageName": "$.status",
+    "message.path.correlationKey": "$.correlationKey",
+    "message.path.variables": "$.['name', 'status', 'correlationKey', 'id', 'createdAt']",
+    "errors.tolerance": "all",
+    "errors.deadletterqueue.topic.name":"deadletterqueue",
+    "errors.deadletterqueue.topic.replication.factor": 1
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "name": "pizza-consumed-source",
+  "config": {
+    "connector.class": "io.zeebe.kafka.connect.ZeebeSourceConnector",
+    "tasks.max": "1",
+    "key.converter": "org.apache.kafka.connect.storage.StringConverter",
+    "value.converter": "org.apache.kafka.connect.storage.StringConverter",
+
+    "__zeebe.client.gateway.address": "zeebe:26500",
+    "__zeebe.client.requestTimeout": "10000",
+    "__zeebe.client.security.plaintext": true,
+    "zeebe.client.cloud.clusterId": "d122ce03-f91c-42c9-b704-f24ffcc46a46",
+    "zeebe.client.cloud.region": "ont-1",
+    "zeebe.client.cloud.clientId": "gZngeF~BSLQV.VePRW2gopEeGi4~QOLG",
+    "zeebe.client.cloud.clientSecret": "RvZj8PNUHXnbxp8KmobibFFgm48famMc9AmdMMnKITbRutIcRjP0QICnmhgH.MI3",
+
+    "zeebe.client.job.worker": "kafka-connector",
+    "zeebe.client.worker.maxJobsActive": "100",
+    "zeebe.client.job.pollinterval": "2000",
+    "zeebe.client.job.timeout": "5000",
+    "job.types": "eatPizza",
+    "job.header.topics": "topic"
+  }
+}
