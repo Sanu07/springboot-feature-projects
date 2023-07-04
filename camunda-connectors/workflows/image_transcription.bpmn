@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:zeebe="http://camunda.org/schema/zeebe/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_0wyddsg" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.3.0" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.0.0">
+  <bpmn:collaboration id="Collaboration_0951vhe">
+    <bpmn:participant id="Event" name="Image Transcription Process End" processRef="image-transcription-workflow" />
+  </bpmn:collaboration>
+  <bpmn:process id="image-transcription-workflow" isExecutable="true">
+    <bpmn:startEvent id="Event_Event_ImageTranscriptionProcessStart" name="Image Transcription Process Start">
+      <bpmn:outgoing>Flow_03e4prf</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:exclusiveGateway id="Gateway_IsHasImages" name="has images?">
+      <bpmn:incoming>Flow_03e4prf</bpmn:incoming>
+      <bpmn:outgoing>Flow_HashNoImage</bpmn:outgoing>
+      <bpmn:outgoing>Flow_HasImage</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="Flow_03e4prf" sourceRef="Event_Event_ImageTranscriptionProcessStart" targetRef="Gateway_IsHasImages" />
+    <bpmn:sequenceFlow id="Flow_HashNoImage" name="no" sourceRef="Gateway_IsHasImages" targetRef="Activity_ProcessTags">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=hasImage or imageCount = 0</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_HasImage" name="yes" sourceRef="Gateway_IsHasImages" targetRef="Activity_TranscribeImages">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=hasImage or imageCount &gt; 0</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:serviceTask id="Activity_TranscribeImages" name="transcribe images">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="transcribeImages" retries="3" />
+        <zeebe:ioMapping>
+          <zeebe:input source="=correlationKey" target="correlationKey" />
+        </zeebe:ioMapping>
+        <zeebe:taskHeaders>
+          <zeebe:header key="topic" value="transcribe-images" />
+        </zeebe:taskHeaders>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_HasImage</bpmn:incoming>
+      <bpmn:outgoing>Flow_1h6o1uj</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="Flow_1h6o1uj" sourceRef="Activity_TranscribeImages" targetRef="Event_ImageTranscriptionCompleted" />
+    <bpmn:intermediateCatchEvent id="Event_ImageTranscriptionCompleted" name="Image Transcription Completed">
+      <bpmn:incoming>Flow_1h6o1uj</bpmn:incoming>
+      <bpmn:outgoing>Flow_0r3okt3</bpmn:outgoing>
+      <bpmn:messageEventDefinition id="MessageEventDefinition_1dakw75" messageRef="Message_13n2pq1" />
+    </bpmn:intermediateCatchEvent>
+    <bpmn:sequenceFlow id="Flow_0r3okt3" sourceRef="Event_ImageTranscriptionCompleted" targetRef="Event_ImageTranscription2MinTimeout" />
+    <bpmn:intermediateCatchEvent id="Event_ImageTranscription2MinTimeout" name="2 Minutes Timeout">
+      <bpmn:incoming>Flow_0r3okt3</bpmn:incoming>
+      <bpmn:outgoing>Flow_1x2wbzj</bpmn:outgoing>
+      <bpmn:timerEventDefinition id="TimerEventDefinition_1wiaz8x">
+        <bpmn:timeDuration xsi:type="bpmn:tFormalExpression">PT2M</bpmn:timeDuration>
+      </bpmn:timerEventDefinition>
+    </bpmn:intermediateCatchEvent>
+    <bpmn:serviceTask id="Activity_ProcessTags" name="process tags">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="processTags" retries="3" />
+        <zeebe:ioMapping>
+          <zeebe:input source="=correlationKey" target="correlationKey" />
+        </zeebe:ioMapping>
+        <zeebe:taskHeaders>
+          <zeebe:header key="topic" value="process-tags" />
+        </zeebe:taskHeaders>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_HashNoImage</bpmn:incoming>
+      <bpmn:incoming>Flow_1x2wbzj</bpmn:incoming>
+      <bpmn:outgoing>Flow_1vw5mdk</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="Flow_1x2wbzj" sourceRef="Event_ImageTranscription2MinTimeout" targetRef="Activity_ProcessTags" />
+    <bpmn:endEvent id="Event_ImageTranscriptionProcessEnd" name="Image Transcription Process End">
+      <bpmn:incoming>Flow_1vw5mdk</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_1vw5mdk" sourceRef="Activity_ProcessTags" targetRef="Event_ImageTranscriptionProcessEnd" />
+    <bpmn:textAnnotation id="TextAnnotation_1f8g1mx">
+      <bpmn:text>image transcription service</bpmn:text>
+    </bpmn:textAnnotation>
+    <bpmn:association id="Association_1cbrcwa" sourceRef="Activity_TranscribeImages" targetRef="TextAnnotation_1f8g1mx" />
+    <bpmn:textAnnotation id="TextAnnotation_1fjrqgo">
+      <bpmn:text>content tagging service</bpmn:text>
+    </bpmn:textAnnotation>
+    <bpmn:association id="Association_1bw0jj3" sourceRef="Event_ImageTranscriptionProcessEnd" targetRef="TextAnnotation_1fjrqgo" />
+  </bpmn:process>
+  <bpmn:message id="Message_13n2pq1" name="IMAGE_TRANSCRIBED">
+    <bpmn:extensionElements>
+      <zeebe:subscription correlationKey="=correlationKey" />
+    </bpmn:extensionElements>
+  </bpmn:message>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Collaboration_0951vhe">
+      <bpmndi:BPMNShape id="Participant_0kq9xt1_di" bpmnElement="Event" isHorizontal="true">
+        <dc:Bounds x="129" y="70" width="1081" height="440" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="TextAnnotation_1f8g1mx_di" bpmnElement="TextAnnotation_1f8g1mx">
+        <dc:Bounds x="440" y="380" width="100" height="55" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="TextAnnotation_1fjrqgo_di" bpmnElement="TextAnnotation_1fjrqgo">
+        <dc:Bounds x="880" y="100" width="100" height="41" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="Event_Event_ImageTranscriptionProcessStart">
+        <dc:Bounds x="232" y="182" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="218" y="225" width="67" height="40" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_1q7y9na_di" bpmnElement="Gateway_IsHasImages" isMarkerVisible="true">
+        <dc:Bounds x="325" y="175" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="319" y="145" width="63" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_13e2bdk_di" bpmnElement="Activity_TranscribeImages">
+        <dc:Bounds x="440" y="270" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0mya2tv_di" bpmnElement="Event_ImageTranscriptionCompleted">
+        <dc:Bounds x="612" y="292" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="600" y="335" width="64" height="40" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_08qkakx_di" bpmnElement="Event_ImageTranscription2MinTimeout">
+        <dc:Bounds x="722" y="292" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="720" y="335" width="48" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_09panj1_di" bpmnElement="Activity_ProcessTags">
+        <dc:Bounds x="690" y="160" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1i7wefv_di" bpmnElement="Event_ImageTranscriptionProcessEnd">
+        <dc:Bounds x="842" y="182" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="828" y="225" width="64" height="40" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Association_1cbrcwa_di" bpmnElement="Association_1cbrcwa">
+        <di:waypoint x="490" y="350" />
+        <di:waypoint x="490" y="380" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Association_1bw0jj3_di" bpmnElement="Association_1bw0jj3">
+        <di:waypoint x="871" y="186" />
+        <di:waypoint x="909" y="141" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_03e4prf_di" bpmnElement="Flow_03e4prf">
+        <di:waypoint x="268" y="200" />
+        <di:waypoint x="325" y="200" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_007ugp9_di" bpmnElement="Flow_HashNoImage">
+        <di:waypoint x="375" y="200" />
+        <di:waypoint x="690" y="200" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="526" y="182" width="13" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1lz1mrh_di" bpmnElement="Flow_HasImage">
+        <di:waypoint x="350" y="225" />
+        <di:waypoint x="350" y="310" />
+        <di:waypoint x="440" y="310" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="357" y="265" width="17" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1h6o1uj_di" bpmnElement="Flow_1h6o1uj">
+        <di:waypoint x="540" y="310" />
+        <di:waypoint x="612" y="310" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0r3okt3_di" bpmnElement="Flow_0r3okt3">
+        <di:waypoint x="648" y="310" />
+        <di:waypoint x="722" y="310" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1x2wbzj_di" bpmnElement="Flow_1x2wbzj">
+        <di:waypoint x="740" y="292" />
+        <di:waypoint x="740" y="240" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1vw5mdk_di" bpmnElement="Flow_1vw5mdk">
+        <di:waypoint x="790" y="200" />
+        <di:waypoint x="842" y="200" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

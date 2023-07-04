@@ -1,0 +1,17 @@
+To connect to a webhook
+--------------------------
+http://localhost:8085/inbound/testWebhook
+should be a POST call
+8085 -> port fot the connectors
+
+To start a connector
+-----------------------------------
+java -cp 'spring-zeebe-connector-runtime-8.1.8-with-dependencies.jar;connector-http-json-0.11.0-with-dependencies.jar' io.camunda.connector.runtime.ConnectorRuntimeApplication
+
+Note:: 8.3 release already has inbuilt connector
+
+REST connector setup
+---------------------
+curl --location 'http://localhost:9191/products' // does not work
+curl --location 'http://192.168.1.2:9191/products' // works with etc/hosts host.docker.internal ip
+curl --location 'https://jsonplaceholder.typicode.com/todos/1' // works
