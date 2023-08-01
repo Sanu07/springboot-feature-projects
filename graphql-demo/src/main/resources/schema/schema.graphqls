@@ -1,0 +1,55 @@
+
+directive @uppercase on FIELD_DEFINITION
+
+"""
+Scalar for ISO timestamps
+"""
+scalar DateTime
+
+scalar Long
+
+scalar JSON
+
+scalar MyScalar
+
+
+type Query {
+    organisation: Organisation
+    organisation2: [Organisation]
+}
+
+type Subscription {
+    stocks: Stock
+}
+
+type Stock {
+    name: String
+    price: Float
+}
+
+type Mutation {
+    saveEmployee(employee: EmployeeInput): Employee!
+}
+
+type Organisation {
+    id: Int!
+    name: String @uppercase
+    establishedYear: DateTime
+    longValue: Long
+    myJson: JSON
+    myScalar: MyScalar
+    employees: [Employee!]
+}
+
+type Employee {
+    id: Int
+    name: String
+    age: Int
+    joiningDate: String
+}
+
+input EmployeeInput {
+    name: String!
+    age: Int = 22
+    joiningDate: DateTime
+}
