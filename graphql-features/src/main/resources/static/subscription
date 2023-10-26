@@ -1,0 +1,7 @@
+subscription userSubscription {
+   userSubscription {
+    id
+    name
+    country
+  }
+}

@@ -1,0 +1,4 @@
+curl --location 'http://localhost:8080/graphql' \
+--form 'operations="{\"query\":\"mutation fileUpload($input: Upload!){\n  uploadScriptWithMultipartPOST(input: $input)\n}\", \"variables\": { \"input\": null} }"' \
+--form '0=@"/Users/saghosh/Desktop/label-box-2.json"' \
+--form 'map="{\"0\": [\"variables.input\"]}"'

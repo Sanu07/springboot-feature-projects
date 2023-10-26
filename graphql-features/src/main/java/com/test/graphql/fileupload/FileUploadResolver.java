@@ -19,6 +19,6 @@ public class FileUploadResolver {
     public boolean uploadScript(DataFetchingEnvironment dfe) throws IOException {
         MultipartFile file = dfe.getArgument("input");
         String content = new String(file.getBytes());
-        return ! content.isEmpty();
+        return !content.isEmpty();
     }
 }
