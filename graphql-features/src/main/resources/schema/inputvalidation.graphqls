@@ -1,0 +1,8 @@
+extend type Query {
+    bookInputValidator(input: BookInput): Book
+}
+
+input BookInput {
+    id: Int
+    name: String
+}

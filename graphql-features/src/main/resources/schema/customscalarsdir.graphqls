@@ -1,0 +1,16 @@
+directive @uppercase on FIELD_DEFINITION
+
+scalar PositiveInt
+scalar ISBN
+
+extend type Query {
+    book: Book
+    bookWithInvalidId: Book
+    bookWithInvalidISBN: Book
+}
+
+type Book {
+    id: PositiveInt
+    name: String @uppercase
+    isbn: ISBN
+}

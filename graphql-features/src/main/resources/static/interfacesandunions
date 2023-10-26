@@ -1,0 +1,22 @@
+query {
+  products {
+    __typename
+    ... on Mobile {
+      productId
+      model
+      offer {
+        __typename
+        ... on Coupon {
+          code
+        }
+        ... on Discount {
+          percent
+        }
+      }
+    }
+    ... on Shirt {
+      productId
+      color
+    }
+  }
+}

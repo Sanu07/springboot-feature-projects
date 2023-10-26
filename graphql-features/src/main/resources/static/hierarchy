@@ -1,0 +1,44 @@
+query getUser1($id: Int!) {
+  user(id: $id) {
+    id
+    name
+    country
+    profileImage1
+    profileImage2
+    profileImage3
+  }
+}
+
+query getUser2($id: Int!) {
+  user(id: $id) {
+    id
+    name
+    country
+  }
+}
+
+query getUserHierarchy1($id: Int!) {
+  userHierarchy(id: $id) {
+    id
+    name
+    country
+    profileImage1
+    profileImage2
+    profileImage3
+  }
+}
+
+query getUserHierarchy2($id: Int!) {
+  userHierarchy(id: $id) {
+    id
+    name
+    country
+  }
+}
+
+
+----------------------------
+
+{
+  "id": 1
+}

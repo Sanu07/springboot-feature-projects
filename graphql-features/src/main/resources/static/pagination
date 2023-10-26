@@ -1,0 +1,38 @@
+query offsetPagination($offset: Int!, $limit: Int!) {
+  offsetPagination(limit: $limit, offset: $offset) {
+    id
+    name
+    country
+  }
+}
+
+query cursorBasedPagination($first: Int, $last: Int, $before:String, $after: String) {
+  cursorPagination(
+    first:$first,
+    last:$last,
+    before: $before,
+    after: $after) {
+    pageInfo {
+      startCursor
+      endCursor
+      hasNextPage
+      hasPreviousPage
+    }
+    edges {
+      cursor
+      node {
+        id
+        name
+        country
+      }
+    }
+  }
+}
+------------------------------------
+
+{
+  "offset": 3,
+  "limit": 3,
+  "first": 4,
+  "before": "Ng=="
+}

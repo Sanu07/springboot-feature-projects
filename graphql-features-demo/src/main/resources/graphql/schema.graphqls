@@ -1,0 +1,27 @@
+type Query {
+    user(id: Int!): User!
+    userHierarchy(id: Int!): UserHierarchy!
+}
+
+type User {
+    id: Int!
+    name: String
+    country: Country
+    profileImage1: String
+    profileImage2: String
+    profileImage3: String
+}
+
+type UserHierarchy {
+    id: Int!
+    name: String
+    country: Country
+    profileImage1: String
+    profileImage2: String
+    profileImage3: String
+}
+
+enum Country {
+    US
+    INDIA
+}

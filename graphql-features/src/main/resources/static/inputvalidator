@@ -1,0 +1,10 @@
+query {
+  bookInputValidator(input: {
+    id: 1
+    name: "abcderf"
+  }) {
+    id
+    name
+    isbn
+  }
+}

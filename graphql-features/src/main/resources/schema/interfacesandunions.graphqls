@@ -1,0 +1,28 @@
+extend type Query {
+    products: [Product]
+}
+
+interface Product {
+    productId: Int
+}
+
+type Mobile implements Product {
+    productId: Int
+    model: String
+    offer: Offer
+}
+
+type Shirt implements Product {
+    productId: Int
+    color: String
+}
+
+union Offer = Coupon | Discount
+
+type Coupon {
+    code: String
+}
+
+type Discount {
+    percent: Int
+}

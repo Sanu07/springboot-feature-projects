@@ -13,7 +13,7 @@ public class InitializeWorkflow {
 
     public void initializeWorkflow() {
         TaskClient taskClient = new TaskClient();
-        taskClient.setRootURI("http://localhost:8080/api/"); // Point this to the server API
+        taskClient.setRootURI("http://192.168.1.2:8080/api/"); // Point this to the server API
 
         int threadCount = 3; // number of threads used to execute workers.  To avoid starvation, should be
         // same or more than number of workers

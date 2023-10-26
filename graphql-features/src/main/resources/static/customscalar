@@ -1,0 +1,23 @@
+query getBooks {
+  book {
+    id
+    name
+    isbn
+  }
+}
+
+query getBooksWithInvalidId {
+  bookWithInvalidId {
+    id
+    name
+    isbn
+  }
+}
+
+query getBooksWithInvalidISBN {
+  bookWithInvalidISBN {
+    id
+    name
+    isbn
+  }
+}
