@@ -38,6 +38,13 @@ query getUserHierarchy2($id: Int!) {
   }
 }
 
+query getUserNPlus1Problem {
+  userNPlus1Problem {
+    id
+    name
+    profileImage1
+  }
+}
 
 ----------------------------
 

@@ -1,6 +1,7 @@
 type Query {
     user(id: Int!): User!
     userHierarchy(id: Int!): UserHierarchy!
+    userNPlus1Problem: [UserHierarchy]
 }
 
 type User {

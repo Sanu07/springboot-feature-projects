@@ -5,6 +5,9 @@ import com.test.graphql.generated.types.UserHierarchy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class UserService {
 
@@ -28,6 +31,15 @@ public class UserService {
                         .build())
                 .findAny()
                 .orElse(null);
+    }
+
+    public List<UserHierarchy> getUsersHierarchyList() {
+        return repository.getUsers().stream().map(user -> UserHierarchy.newBuilder()
+                .name(user.getName())
+                .country(user.getCountry())
+                .id(user.getId())
+                .build())
+                .collect(Collectors.toList());
     }
 
     public String getUserProfileImage1(Integer id) {

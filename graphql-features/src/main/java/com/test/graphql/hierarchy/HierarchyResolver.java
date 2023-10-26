@@ -10,6 +10,8 @@ import com.test.graphql.generated.types.UserHierarchy;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.List;
+
 @Slf4j
 @DgsComponent
 public class HierarchyResolver {
@@ -25,6 +27,11 @@ public class HierarchyResolver {
     @DgsData(parentType = DgsConstants.QUERY_TYPE, field = DgsConstants.QUERY.UserHierarchy)
     public UserHierarchy getSingleUserInHierarchy(@InputArgument("id") Integer id) {
         return userService.getUserDetailsInHierarchy(id);
+    }
+
+    @DgsData(parentType = DgsConstants.QUERY_TYPE, field = DgsConstants.QUERY.UserNPlus1Problem)
+    public List<UserHierarchy> getSingleUserInHierarchy() {
+        return userService.getUsersHierarchyList();
     }
 
     @DgsData(parentType = DgsConstants.USERHIERARCHY.TYPE_NAME, field = DgsConstants.USERHIERARCHY.ProfileImage1)
