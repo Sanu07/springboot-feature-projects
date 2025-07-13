@@ -1,0 +1,36 @@
+package rules
+
+import com.drools.jpa.model.Order
+// -------------------- SBI Rules --------------------
+rule "SBI - 30% Discount for Order above 200 and below 500"
+salience 30
+agenda-group "orders-discount-sbi"
+when
+    $order: Order(price >= 200 && price < 500 && (discount == null))
+then
+    $order.setDiscount(30.0);
+    update($order);
+    System.out.println("SBI: Applied 30% Discount");
+end
+
+rule "SBI - 20% Discount for Order above 100 and below 200"
+salience 20
+agenda-group "orders-discount-sbi"
+when
+    $order: Order(price >= 100 && price < 200 && (discount == null))
+then
+    $order.setDiscount(20.0);
+    update($order);
+    System.out.println("SBI: Applied 20% Discount");
+end
+
+rule "SBI - 15% Default Discount"
+salience 10
+agenda-group "orders-discount-sbi"
+when
+    $order: Order(discount == null)
+then
+    $order.setDiscount(15.0);
+    update($order);
+    System.out.println("SBI: Applied 15% Default Discount");
+end

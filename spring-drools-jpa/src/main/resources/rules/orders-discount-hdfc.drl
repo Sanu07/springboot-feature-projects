@@ -1,0 +1,37 @@
+package rules
+
+import com.drools.jpa.model.Order
+
+// -------------------- HDFC Rules --------------------
+rule "HDFC - 20% Discount for Order above 200 and below 500"
+salience 30
+agenda-group "orders-discount-hdfc"
+when
+    $order: Order(price >= 200 && price < 500 && (discount == null))
+then
+    $order.setDiscount(20.0);
+    update($order);
+    System.out.println("HDFC: Applied 20% Discount");
+end
+
+rule "HDFC - 10% Discount for Order above 100 and below 200"
+salience 20
+agenda-group "orders-discount-hdfc"
+when
+    $order: Order(price >= 100 && price < 200 && (discount == null))
+then
+    $order.setDiscount(10.0);
+    update($order);
+    System.out.println("HDFC: Applied 10% Discount");
+end
+
+rule "HDFC - 5% Default Discount"
+salience 10
+agenda-group "orders-discount-hdfc"
+when
+    $order: Order(discount == null)
+then
+    $order.setDiscount(5.0);
+    update($order);
+    System.out.println("HDFC: Applied 5% Default Discount");
+end
