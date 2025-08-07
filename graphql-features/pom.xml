@@ -115,6 +115,7 @@
 						<param>src/main/resources/schema/interfacesandunions.graphqls</param>
 						<param>src/main/resources/schema/dataloader.graphqls</param>
 						<param>src/main/resources/schema/fileupload.graphqls</param>
+						<param>src/main/resources/schema/federation.graphqls</param>
 					</schemaPaths>
 					<typeMapping>
 						<PositiveInt>java.lang.Integer</PositiveInt>

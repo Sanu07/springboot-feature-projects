@@ -1,0 +1,9 @@
+type Query {
+    transactions(folioId: Int): [Transaction]
+}
+
+type Transaction {
+    id: ID
+    folioId: Int
+    amount: String
+}

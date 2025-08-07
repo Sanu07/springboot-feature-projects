@@ -2,9 +2,9 @@ package com.test.graphql.hierarchy;
 
 import com.test.graphql.generated.types.Country;
 import com.test.graphql.generated.types.User;
-import jakarta.annotation.PostConstruct;
 import org.springframework.stereotype.Repository;
 
+import javax.annotation.PostConstruct;
 import java.util.Arrays;
 import java.util.List;
 

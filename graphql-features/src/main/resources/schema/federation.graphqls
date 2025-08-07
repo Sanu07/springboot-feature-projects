@@ -1,0 +1,8 @@
+extend type Query {
+    folio(id: Int!): Folio
+}
+
+type Folio {
+    id: PositiveInt
+    folioNumber: String
+}
