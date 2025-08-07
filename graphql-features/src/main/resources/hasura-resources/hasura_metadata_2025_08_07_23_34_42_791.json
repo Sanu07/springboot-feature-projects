@@ -1,0 +1,86 @@
+{
+  "resource_version": 18,
+  "metadata": {
+    "version": 3,
+    "sources": [
+      {
+        "name": "default",
+        "kind": "postgres",
+        "tables": [],
+        "configuration": {
+          "connection_info": {
+            "database_url": {
+              "from_env": "HASURA_GRAPHQL_DATABASE_URL"
+            },
+            "isolation_level": "read-committed",
+            "pool_settings": {
+              "connection_lifetime": 600,
+              "idle_timeout": 180,
+              "max_connections": 50,
+              "retries": 1
+            },
+            "use_prepared_statements": true
+          }
+        }
+      }
+    ],
+    "remote_schemas": [
+      {
+        "name": "folio",
+        "definition": {
+          "url": "http://host.docker.internal:8000/graphql",
+          "timeout_seconds": 60,
+          "customization": {
+            "root_fields_namespace": "folio",
+            "type_names": {
+              "mapping": {},
+              "prefix": "folio"
+            }
+          },
+          "forward_client_headers": true
+        },
+        "comment": "",
+        "remote_relationships": [
+          {
+            "relationships": [
+              {
+                "definition": {
+                  "to_remote_schema": {
+                    "lhs_fields": [
+                      "id"
+                    ],
+                    "remote_field": {
+                      "transactions": {
+                        "arguments": {
+                          "folioId": "$id"
+                        }
+                      }
+                    },
+                    "remote_schema": "transactions"
+                  }
+                },
+                "name": "folio"
+              }
+            ],
+            "type_name": "Folio"
+          }
+        ]
+      },
+      {
+        "name": "transactions",
+        "definition": {
+          "url": "http://host.docker.internal:8001/graphql",
+          "timeout_seconds": 60,
+          "customization": {
+            "root_fields_namespace": "transactions",
+            "type_names": {
+              "mapping": {}
+            }
+          },
+          "forward_client_headers": true
+        },
+        "comment": ""
+      }
+    ]
+  }
+}
